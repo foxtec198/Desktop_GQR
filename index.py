@@ -6,8 +6,8 @@ import os
 class FrontEnd():
     def __init__(self):
         self.app = QtWidgets.QApplication([])
-        self.loginWin = uic.loadUi('uis/login.ui')
-        self.mainWin = uic.loadUi('uis/main.ui')
+        self.loginWin = uic.loadUi('uis\login.ui')
+        self.mainWin = uic.loadUi('uis\main.ui')
         set()
         
         # Call de funções
