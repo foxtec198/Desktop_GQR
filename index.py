@@ -35,12 +35,15 @@ class FrontEnd():
             except:
                 self.msg(self.loginWin, 'Erro de Login', 'Dados Incorretos // VPN não Ativo')
         else:
-            self.msg(self.loginWin, 'Erro!', 'Login não pode estar em branco')
+            self.msg(self.loginWin, 'Erro!', 'Os dados de login não\npode estar em branco !!!')
             
     def gerarQrCode(self):
         if self.estrutura() != '':
-            back.gerarQrCodes(self.user, self.pasw, self.estrutura())
-            self.msg(self.mainWin, 'Sucesso', 'QRCodes gerados com sucesso')
+            try:
+                back.gerarQrCodes(self.user, self.pasw, self.estrutura())
+                self.msg(self.mainWin, 'Sucesso', 'QRCodes gerados com sucesso')
+            except:
+                self.msg(self.mainWin, 'Erro', 'QR Não gerado!\nErro com o login ou VPN')
         else:
             self.msg(self.mainWin, 'Erro!', 'A estrutura não pode estar em branco')
     
