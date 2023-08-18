@@ -1,1 +1,0 @@
-pyinstaller -w -F -n GeradorQR --icon scr\icon.ico index.py
