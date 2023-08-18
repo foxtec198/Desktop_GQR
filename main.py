@@ -8,9 +8,10 @@
 
 import pyodbc as sql # Connect SQL
 import yaml as y # Yaml de dados
-import segno as qr # Gerador de qr
+import segno # Gerador de qr
 import os # Sistema
 from time import strftime as st # Data e Hora Atual
+from PIL import Image, ImageDraw, ImageFont
 
 class gerarQrCodes():
     # Função de inicio
@@ -34,6 +35,10 @@ class gerarQrCodes():
         self.data = st('%d-%m_%H-%M-%S')
         self.consultaSeparada()
         for i in self.estrutura:self.nomeGrupo=i[2]
+        try:
+            os.mkdir('QRCodes')
+        except:
+            pass
         self.nomeDir = f'QRCodes\{self.nomeGrupo}_{self.data}'
         os.makedirs(self.nomeDir)
     
@@ -42,8 +47,16 @@ class gerarQrCodes():
         for c in self.estrutura:
             qrc = c[1]
             nomeLocal = c[0]
-            qrcode = qr.make_qr(qrc)
-            qrcode.save(f'{self.nomeDir}\{nomeLocal}.png', scale=10)
+            qrcode = segno.make_qr(qrc)
+            qrLocal = f'{self.nomeDir}\{nomeLocal}.png'
+            qrcode.save(qrLocal, scale=10)
+            qrImg = Image.open(qrLocal)
+            modelo = Image.open('scr/modelo.png')
+            merge = Image.new('RGBA', modelo.size)
+            x = int((modelo.size[0]-qrImg.size[0])/2)
+            merge.paste(modelo)
+            merge.paste(qrImg, (x, 350))
+            merge.save(qrLocal)
             
     # Conexão com o banco de dados   
     def connect(self):

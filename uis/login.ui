@@ -246,7 +246,7 @@
      </spacer>
     </item>
     <item>
-     <widget class="QRadioButton" name="radioSaveUser">
+     <widget class="QRadioButton" name="saveUser">
       <property name="font">
        <font>
         <pointsize>10</pointsize>

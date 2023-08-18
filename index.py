@@ -1,24 +1,43 @@
 from PyQt5 import uic, QtWidgets
 import main as back
 from qdarktheme import setup_theme as set
-import os
+import os, time
+import pyodbc
+import sqlite3 as sq
 
 class FrontEnd():
     def __init__(self):
         self.app = QtWidgets.QApplication([])
         self.loginWin = uic.loadUi('uis\login.ui')
         self.mainWin = uic.loadUi('uis\main.ui')
-        set()
+        self.conn = sq.connect('scr\dd.db')
+        self.c = self.conn.cursor()
+        self.c.execute("CREATE TABLE IF NOT EXISTS userSalvo(Id INTEGER PRIMARY KEY AUTOINCREMENT, user TEXT, pasw TEXT, verify INT)")
+        set() #seta modo escuro
         
         # Call de funções
+        
         # LOGIN
         self.loginWin.btnLogin.clicked.connect(self.main)
-        self.radioBtn = self.loginWin.radioSaveUser
+        
         # MAIN
         self.mainWin.btnGerarQR.clicked.connect(self.gerarQrCode)
         self.mainWin.btnAbrirPasta.clicked.connect(self.abrirPastaDeGeracao)
         self.estrutura = self.mainWin.estruturaEntry.text
         self.loginWin.show()
+        
+        
+        # Verifica se o login foi salvo
+        u = self.c.execute('select user, pasw, verify from userSalvo ORDER BY Id DESC').fetchone()
+        if u != None:#Confere se não está vazio
+            UltimoId = self.c.execute('select Id from userSalvo order by Id desc').fetchone()[0]
+            self.c.execute(f"delete from userSalvo where Id <> '{UltimoId}' ")
+            if u[2] == 1:
+                #Realiza o preenchimento
+                self.loginWin.entryUser.setText(u[0])
+                self.loginWin.entryPasw.setText(u[1])
+                self.loginWin.saveUser.setChecked(True)
+                
         self.app.exec()
         
     def msg(self, *args):
@@ -28,6 +47,12 @@ class FrontEnd():
     def main(self):
         self.user = self.loginWin.entryUser.text()
         self.pasw = self.loginWin.entryPasw.text()
+        if self.loginWin.saveUser.isChecked():
+            self.salvarUser(self.user, self.pasw)
+        else:
+            self.c.execute('delete from userSalvo')
+            self.conn.commit()
+            
         if self.user != '' and self.pasw != '':
             try:
                 self.loginWin.close()
@@ -42,12 +67,21 @@ class FrontEnd():
             try:
                 back.gerarQrCodes(self.user, self.pasw, self.estrutura())
                 self.msg(self.mainWin, 'Sucesso', 'QRCodes gerados com sucesso')
-            except:
-                self.msg(self.mainWin, 'Erro', 'QR Não gerado!\nErro com o login ou VPN')
+            except pyodbc.ProgrammingError as Ero:
+                self.msg(self.mainWin, f'Erro', 'QR Não gerado!\ \nVPN desligado ou Senha Expirada')
+            except pyodbc.InterfaceError as Er:
+                self.msg(self.mainWin, f'Erro', 'QR Não gerado!\nLogin Incorreto')
         else:
             self.msg(self.mainWin, 'Erro!', 'A estrutura não pode estar em branco')
     
     def abrirPastaDeGeracao(self):
         os.system('explorer QRCodes')
-        
+    
+    def salvarUser(self, *args):
+        self.c.execute(f'''
+                  INSERT INTO userSalvo(user, pasw, verify)
+                  VALUES ('{args[0]}','{args[1]}', 1)
+                  ''')
+        self.conn.commit()
+
 FrontEnd()
