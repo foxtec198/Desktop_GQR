@@ -25,7 +25,7 @@ class gerarQrCodes():
     
     # Puxa os dados de um Yaml Codificado!  
     def yml(self):
-        with open('dados.yaml', 'r') as f:
+        with open('resources/scr/dados.yaml', 'r') as f:
             dict = y.load(f, Loader = y.FullLoader)
             self.server = dict['servidor']
             self.db = dict['db']
@@ -36,10 +36,10 @@ class gerarQrCodes():
         self.consultaSeparada()
         for i in self.estrutura:self.nomeGrupo=i[2]
         try:
-            os.mkdir('QRCodes')
+            os.mkdir('resources/QRCodes')
         except:
             pass
-        self.nomeDir = f'QRCodes\{self.nomeGrupo}_{self.data}'
+        self.nomeDir = f'resources/QRCodes/{self.nomeGrupo}_{self.data}'
         os.makedirs(self.nomeDir)
     
     # Logica para gerar qrcodes
@@ -47,15 +47,26 @@ class gerarQrCodes():
         for c in self.estrutura:
             qrc = c[1]
             nomeLocal = c[0]
+            nomeLocal = nomeLocal.replace('/','')
             qrcode = segno.make_qr(qrc)
-            qrLocal = f'{self.nomeDir}\{nomeLocal}.png'
+            qrLocal = f'{self.nomeDir}/{nomeLocal}.png'
             qrcode.save(qrLocal, scale=10)
             qrImg = Image.open(qrLocal)
-            modelo = Image.open('scr/modelo.png')
+            modelo = Image.open('resources/scr/modelo.png')
             merge = Image.new('RGBA', modelo.size)
             x = int((modelo.size[0]-qrImg.size[0])/2)
             merge.paste(modelo)
             merge.paste(qrImg, (x, 350))
+            txt = Image.open('resources/scr/600.png')
+            dw = ImageDraw.Draw(txt)
+            fnt = ImageFont.truetype('resources/scr/arial_narrow_7.ttf', 35)
+            x, y = dw.textsize(nomeLocal, fnt)
+            xt = (600-x)/2
+            dw.text((xt, 40), nomeLocal, font=fnt, fill='black', align='center')
+            txt.save('resources/scr/texto.png')
+            imgt = Image.open('resources/scr/texto.png')
+            x = int((modelo.size[0]-imgt.size[0])/2)
+            merge.paste(imgt, (x, 200))
             merge.save(qrLocal)
             
     # Conexão com o banco de dados   
@@ -68,5 +79,6 @@ class gerarQrCodes():
         
     def consultaSeparada(self):
         self.cons = f"SELECT Descricao as Nome, QRCode, Grupo FROM Estrutura WHERE HierarquiaDescricao LIKE '%{self.estrutura}%'"
-        self.estrutura = self.c.execute(self.cons).fetchall()  
+        self.estrutura = self.c.execute(self.cons).fetchall()
+
         

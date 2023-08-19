@@ -8,9 +8,9 @@ import sqlite3 as sq
 class FrontEnd():
     def __init__(self):
         self.app = QtWidgets.QApplication([])
-        self.loginWin = uic.loadUi('uis\login.ui')
-        self.mainWin = uic.loadUi('uis\main.ui')
-        self.conn = sq.connect('scr\dd.db')
+        self.loginWin = uic.loadUi('resources/uis/login.ui')
+        self.mainWin = uic.loadUi('resources/uis/main.ui')
+        self.conn = sq.connect('resources/scr/dd.db')
         self.c = self.conn.cursor()
         self.c.execute("CREATE TABLE IF NOT EXISTS userSalvo(Id INTEGER PRIMARY KEY AUTOINCREMENT, user TEXT, pasw TEXT, verify INT)")
         set() #seta modo escuro
@@ -64,18 +64,16 @@ class FrontEnd():
             
     def gerarQrCode(self):
         if self.estrutura() != '':
-            try:
-                back.gerarQrCodes(self.user, self.pasw, self.estrutura())
-                self.msg(self.mainWin, 'Sucesso', 'QRCodes gerados com sucesso')
-            except pyodbc.ProgrammingError as Ero:
-                self.msg(self.mainWin, f'Erro', 'QR Não gerado!\ \nVPN desligado ou Senha Expirada')
-            except pyodbc.InterfaceError as Er:
-                self.msg(self.mainWin, f'Erro', 'QR Não gerado!\nLogin Incorreto')
+            # try:
+            back.gerarQrCodes(self.user, self.pasw, self.estrutura())
+            self.msg(self.mainWin, 'Sucesso', 'QRCodes gerados com sucesso')
+            # except:
+            #     self.msg(self.mainWin, 'Erro', 'Algo deu errado! Confira seu Login')
         else:
             self.msg(self.mainWin, 'Erro!', 'A estrutura não pode estar em branco')
     
     def abrirPastaDeGeracao(self):
-        os.system('explorer QRCodes')
+        os.system('explorer resources\QRCodes')
     
     def salvarUser(self, *args):
         self.c.execute(f'''
