@@ -1,7 +1,6 @@
-![qr](https://github.com/foxtec198/GeradorDeQrCode/assets/64221923/d1eae951-8619-42e5-8b74-af8563d4802b)
-# Gerador De Qr Code
-
- Gerador Automatico de QRCodes
+<image src= 'https://github.com/foxtec198/GeradorDeQrCode/assets/64221923/d1eae951-8619-42e5-8b74-af8563d4802b'>
+ <br/>
+<h1><b>Gerador Automatico de QRCodes</b></h1>
 
 <h2> Tela de Login: </h2>
 <p>Aqui você irá realizar o Login no App com suas credenciais do BD</p>
@@ -17,5 +16,9 @@
 <p>Após isso basta clicar em <b>Abrir Pasta</b></p>
  <h2>Windows Explorer</h2>
  <p>Ele vai abrir o navegador de arquivos e seus QRCodes já estão disponiveis para uso!</p>
- <image src='https://github.com/foxtec198/GeradorDeQrCode/assets/64221923/d666b693-d584-41f3-98c4-eed5602afc0d'>
- <image src='https://github.com/foxtec198/GeradorDeQrCode/assets/64221923/3ea567a7-8a1c-416b-9994-0f819a3fa6c0'>
+<image src = 'https://github.com/foxtec198/GeradorQR/assets/64221923/798ec30b-3aec-4e32-a2ec-3c20b0a0b529'>
+ <h2>Finalizado:</h2>
+ <p>Agora basta imprimir ou enviar a Gráfica. <br/>
+  Até mais!</p>
+<image src = 'https://github.com/foxtec198/GeradorQR/assets/64221923/d3331696-1f7d-449c-bfb6-83236dc10fd2'>
+
