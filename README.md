@@ -25,8 +25,11 @@
 <p>Ele vai abrir o navegador de arquivos e seus QRCodes já estão disponiveis para uso!</p>
 <image src = 'https://github.com/foxtec198/GeradorQR/assets/64221923/798ec30b-3aec-4e32-a2ec-3c20b0a0b529'>
 <h2>Finalizado:</h2>
+<br></br>
 <p>Agora basta imprimir ou enviar a Gráfica. <br/> Até mais!</p>
 <image src = 'https://github.com/foxtec198/GeradorQR/assets/64221923/d3331696-1f7d-449c-bfb6-83236dc10fd2'>
+<br></br>
+<br></br>
 <p><b>Novidade:</b>Nova geração de PDF com todos os QR Codes Prontos pra impressão</p>
 <image src = 'resources/prints/explorer.png'>
 <image src= 'resources/prints/pdf.png'>
