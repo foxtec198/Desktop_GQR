@@ -13,7 +13,7 @@
 <image src = 'https://github.com/foxtec198/GeradorDeQrCode/assets/64221923/21468ace-00bb-42be-8aad-67b4cf514c7b'/>
 <p>Atualizado</p>
 <img src='resources/prints/main.png'>
-<p>Botão para reporte de bugs // problemas</p>
+<p>Botão para reporte de bugs // problemas adicionado</p>
 
 <p>Adicionando a estrutura é só clicar em <b>Gerar</b></p>
 <image src='https://github.com/foxtec198/GeradorDeQrCode/assets/64221923/202da2cd-968f-46c3-b5dd-f7ddcf055162'>
