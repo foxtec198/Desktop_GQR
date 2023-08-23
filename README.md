@@ -4,14 +4,10 @@
 
 <h2> Tela de Login: </h2>
 <p>Aqui você irá realizar o Login no App com suas credenciais do BD</p>
-<image src='https://github.com/foxtec198/GeradorDeQrCode/assets/64221923/3c46fe9b-0af9-4daf-a093-fc5e83859481'>
-<p>Atualizado</p>
 <img src='resources/prints/login.png'>
 
 <h2>Tela Principal</h2>
 <p>Após realizar o login, você ira colocar um CR ou um Estrutura pra gerar os QRCodes</p>
-<image src = 'https://github.com/foxtec198/GeradorDeQrCode/assets/64221923/21468ace-00bb-42be-8aad-67b4cf514c7b'/>
-<p>Atualizado</p>
 <img src='resources/prints/main.png'>
 <p>Botão para reporte de bugs // problemas adicionado</p>
 <br></br>
