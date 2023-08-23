@@ -12,6 +12,9 @@ import segno # Gerador de qr
 import os # Sistema
 from time import strftime as st # Data e Hora Atual
 from PIL import Image, ImageDraw, ImageFont
+import PyPDF2 as pdf2
+from reportlab.pdfgen import canvas
+
 
 class gerarQrCodes():
     # Função de inicio
@@ -46,10 +49,10 @@ class gerarQrCodes():
     def logica(self): 
         for c in self.estrutura:
             qrc = c[1]
-            nomeLocal = c[0]
-            nomeLocal = nomeLocal.replace('/','')
+            self.nomeLocal = c[0]
+            self.nomeLocal = self.nomeLocal.replace('/','')
             qrcode = segno.make_qr(qrc)
-            qrLocal = f'{self.nomeDir}/{nomeLocal}.png'
+            qrLocal = f'{self.nomeDir}/{self.nomeLocal}.png'
             qrcode.save(qrLocal, scale=10)
             qrImg = Image.open(qrLocal)
             modelo = Image.open('resources/scr/modelo.png')
@@ -60,15 +63,41 @@ class gerarQrCodes():
             txt = Image.open('resources/scr/600.png')
             dw = ImageDraw.Draw(txt)
             fnt = ImageFont.truetype('resources/scr/arial_narrow_7.ttf', 35)
-            x, y = dw.textsize(nomeLocal, fnt)
+            x, y = dw.textsize(self.nomeLocal, fnt)
             xt = (600-x)/2
-            dw.text((xt, 40), nomeLocal, font=fnt, fill='black', align='center')
+            dw.text((xt, 40), self.nomeLocal, font=fnt, fill='black', align='center')
             txt.save('resources/scr/texto.png')
             imgt = Image.open('resources/scr/texto.png')
             x = int((modelo.size[0]-imgt.size[0])/2)
             merge.paste(imgt, (x, 200))
             merge.save(qrLocal)
+            # trans pdf
+            img = Image.open(qrLocal)
+            x, y = img.size
+            self.nomePdf = f'{self.nomeDir}/{self.nomeLocal}.pdf'
+            pdf = canvas.Canvas(self.nomePdf, pagesize=(x, y))
+            pdf.drawImage(qrLocal, 0,0)
+            pdf.save()
+        self.merge()
+        self.remove() 
+    
+    def remove(self):
+        dir = os.listdir(self.nomeDir)
+        for i in dir:
+            if '.pdf' in i and i != 'EstruturaCompleta.pdf':
+                os.remove(f'{self.nomeDir}/{i}')
             
+    def merge(self, *agrs):
+        dir = os.listdir(self.nomeDir)
+        mg = pdf2.PdfMerger()
+        for i in dir:
+            if '.pdf' in i:
+                with open(f'{self.nomeDir}/{i}', 'rb') as arq:
+                    dados = pdf2.PdfReader(arq)
+                    mg.append(dados)
+        mg.write(f'{self.nomeDir}/EstruturaCompleta.pdf')
+        mg.close()
+         
     # Conexão com o banco de dados   
     def connect(self):
         # Conecta com o DB

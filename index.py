@@ -64,11 +64,12 @@ class FrontEnd():
             
     def gerarQrCode(self):
         if self.estrutura() != '':
-            # try:
             back.gerarQrCodes(self.user, self.pasw, self.estrutura())
             self.msg(self.mainWin, 'Sucesso', 'QRCodes gerados com sucesso')
-            # except:
-            #     self.msg(self.mainWin, 'Erro', 'Algo deu errado! Confira seu Login')
+            try:
+                pass
+            except:
+                self.msg(self.mainWin, 'Erro', 'Algo deu errado! Confira seu Login')
         else:
             self.msg(self.mainWin, 'Erro!', 'A estrutura não pode estar em branco')
     
