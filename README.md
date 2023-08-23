@@ -21,6 +21,9 @@
 <p>O app te retorna quando todos os QRCodes estiverem prontos!</p>
 <image src='https://github.com/foxtec198/GeradorDeQrCode/assets/64221923/568eab08-c6a0-45d5-bd43-8b24653bdb51'>
 <p>Após isso basta clicar em <b>Abrir Pasta</b></p>
+<br></br>
+<br></br>
+
 <h2>Windows Explorer</h2>
 <p>Ele vai abrir o navegador de arquivos e seus QRCodes já estão disponiveis para uso!</p>
 <image src = 'https://github.com/foxtec198/GeradorQR/assets/64221923/798ec30b-3aec-4e32-a2ec-3c20b0a0b529'>
