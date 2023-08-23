@@ -2,8 +2,9 @@ from PyQt5 import uic, QtWidgets
 import main as back
 from qdarktheme import setup_theme as set
 import os, time
-import pyodbc
+import webbrowser as wb
 import sqlite3 as sq
+#issue 
 
 class FrontEnd():
     def __init__(self):
@@ -23,8 +24,10 @@ class FrontEnd():
         # MAIN
         self.mainWin.btnGerarQR.clicked.connect(self.gerarQrCode)
         self.mainWin.btnAbrirPasta.clicked.connect(self.abrirPastaDeGeracao)
+        self.mainWin.gitBtn.clicked.connect(self.gitHub)
         self.estrutura = self.mainWin.estruturaEntry.text
         self.loginWin.show()
+        
         
         
         # Verifica se o login foi salvo
@@ -43,7 +46,10 @@ class FrontEnd():
     def msg(self, *args):
         # WIN - TITULO - MENSAGEM 
         QtWidgets.QMessageBox.about(args[0], args[1], args[2])
-         
+    
+    def gitHub(self):
+        wb.open_new_tab('https://github.com/foxtec198/GeradorQR/issues/new')
+        
     def main(self):
         self.user = self.loginWin.entryUser.text()
         self.pasw = self.loginWin.entryPasw.text()
@@ -64,9 +70,10 @@ class FrontEnd():
             
     def gerarQrCode(self):
         if self.estrutura() != '':
-            back.gerarQrCodes(self.user, self.pasw, self.estrutura())
-            self.msg(self.mainWin, 'Sucesso', 'QRCodes gerados com sucesso')
             try:
+                self.msg(self.mainWin, 'Sucesso', 'Gerando QR Codes...')
+                e = back.gerarQrCodes(self.user, self.pasw, self.estrutura())
+                self.msg(self.mainWin, 'Sucesso', f'QRCodes gerados com sucesso - {e.nomeLocal}')
                 pass
             except:
                 self.msg(self.mainWin, 'Erro', 'Algo deu errado! Confira seu Login')

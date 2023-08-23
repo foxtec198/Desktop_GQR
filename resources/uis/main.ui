@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>mainWindow</class>
+ <widget class="QMainWindow" name="mainWindow">
   <property name="windowModality">
-   <enum>Qt::ApplicationModal</enum>
+   <enum>Qt::NonModal</enum>
   </property>
   <property name="enabled">
    <bool>true</bool>
@@ -13,7 +13,7 @@
     <x>0</x>
     <y>0</y>
     <width>200</width>
-    <height>238</height>
+    <height>300</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -25,12 +25,12 @@
   <property name="minimumSize">
    <size>
     <width>200</width>
-    <height>200</height>
+    <height>300</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>200</width>
+    <width>500</width>
     <height>238</height>
    </size>
   </property>
@@ -163,8 +163,11 @@
       <property name="text">
        <string/>
       </property>
+      <property name="textFormat">
+       <enum>Qt::AutoText</enum>
+      </property>
       <property name="pixmap">
-       <pixmap>../scr/qr.png</pixmap>
+       <pixmap>../scr/icons8-biblioteca-100.png</pixmap>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -183,6 +186,11 @@
     </item>
     <item>
      <widget class="QLineEdit" name="estruturaEntry">
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
       <property name="toolTip">
        <string>Adicione um CR ou uma Estrutura Especifica</string>
       </property>
@@ -195,6 +203,16 @@
      <widget class="QPushButton" name="btnGerarQR">
       <property name="text">
        <string>Gerar</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>../scr/icons8-engrenagem-100.png</normaloff>../scr/icons8-engrenagem-100.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>20</width>
+        <height>20</height>
+       </size>
       </property>
       <property name="shortcut">
        <string>Enter</string>
@@ -211,10 +229,49 @@
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>../scr/icons8-pasta-100.png</normaloff>../scr/icons8-pasta-100.png</iconset>
+        <normaloff>../scr/icons8-pasta-100 (1).png</normaloff>../scr/icons8-pasta-100 (1).png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>20</width>
+        <height>20</height>
+       </size>
       </property>
       <property name="shortcut">
        <string>Ctrl+O</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="gitBtn">
+      <property name="font">
+       <font>
+        <family>MS UI Gothic</family>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <italic>false</italic>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="cursor">
+       <cursorShape>ArrowCursor</cursorShape>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: white;
+color: #333;</string>
+      </property>
+      <property name="text">
+       <string>Reportar Bugs</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>../scr/25231.png</normaloff>../scr/25231.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>20</width>
+        <height>20</height>
+       </size>
       </property>
      </widget>
     </item>

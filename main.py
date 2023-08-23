@@ -15,7 +15,6 @@ from PIL import Image, ImageDraw, ImageFont
 import PyPDF2 as pdf2
 from reportlab.pdfgen import canvas
 
-
 class gerarQrCodes():
     # Função de inicio
     def __init__(self,  *dd):
@@ -46,17 +45,18 @@ class gerarQrCodes():
         os.makedirs(self.nomeDir)
     
     # Logica para gerar qrcodes
-    def logica(self): 
+    def logica(self):
+        cont = 0
         for c in self.estrutura:
-            qrc = c[1]
-            self.nomeLocal = c[0]
-            self.nomeLocal = self.nomeLocal.replace('/','')
-            qrcode = segno.make_qr(qrc)
-            qrLocal = f'{self.nomeDir}/{self.nomeLocal}.png'
-            qrcode.save(qrLocal, scale=10)
-            qrImg = Image.open(qrLocal)
-            modelo = Image.open('resources/scr/modelo.png')
-            merge = Image.new('RGBA', modelo.size)
+            qrc = c[1] # definindo o qr code
+            self.nomeLocal = c[0] # o nome do sublocal
+            self.nomeLocal = self.nomeLocal.replace('/','') # removendo barras para n ocasionar erro
+            qrcode = segno.make_qr(qrc) # gerando o qrcode.png
+            qrLocal = f'{self.nomeDir}/{self.nomeLocal}.png' # definido a estrutura do diretorio
+            qrcode.save(qrLocal, scale=10) #salvando o qrcode no diretorio
+            qrImg = Image.open(qrLocal) # Abrindo o qrcode com o PIL
+            modelo = Image.open('resources/scr/modelo.png') # Abrindo o modelo padrão com o PIL
+            merge = Image.new('RGBA', modelo.size) # Abrinda uma nova imagem para edição
             x = int((modelo.size[0]-qrImg.size[0])/2)
             merge.paste(modelo)
             merge.paste(qrImg, (x, 350))
@@ -78,8 +78,10 @@ class gerarQrCodes():
             pdf = canvas.Canvas(self.nomePdf, pagesize=(x, y))
             pdf.drawImage(qrLocal, 0,0)
             pdf.save()
+            cont += 1
         self.merge()
-        self.remove() 
+        self.remove()
+        
     
     def remove(self):
         dir = os.listdir(self.nomeDir)

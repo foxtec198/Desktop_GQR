@@ -13,7 +13,7 @@
     <x>0</x>
     <y>0</y>
     <width>200</width>
-    <height>238</height>
+    <height>300</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -25,7 +25,7 @@
   <property name="minimumSize">
    <size>
     <width>200</width>
-    <height>200</height>
+    <height>300</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -185,7 +185,7 @@
      <widget class="QLineEdit" name="entryUser">
       <property name="font">
        <font>
-        <pointsize>10</pointsize>
+        <pointsize>12</pointsize>
        </font>
       </property>
       <property name="toolTip">
@@ -206,7 +206,7 @@
      <widget class="QLineEdit" name="entryPasw">
       <property name="font">
        <font>
-        <pointsize>10</pointsize>
+        <pointsize>12</pointsize>
        </font>
       </property>
       <property name="toolTip">
@@ -233,30 +233,23 @@
      </widget>
     </item>
     <item>
-     <spacer name="verticalSpacer">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>40</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item>
      <widget class="QRadioButton" name="saveUser">
       <property name="font">
        <font>
         <pointsize>10</pointsize>
        </font>
       </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
       <property name="text">
        <string>Salvar Usuário</string>
       </property>
       <property name="shortcut">
        <string>Ctrl+S</string>
+      </property>
+      <property name="autoRepeat">
+       <bool>true</bool>
       </property>
      </widget>
     </item>
@@ -267,12 +260,12 @@
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>../scr/login.png</normaloff>../scr/login.png</iconset>
+        <normaloff>../scr/icons8-login-arredondado-à-direita-100.png</normaloff>../scr/icons8-login-arredondado-à-direita-100.png</iconset>
       </property>
       <property name="iconSize">
        <size>
-        <width>18</width>
-        <height>18</height>
+        <width>20</width>
+        <height>20</height>
        </size>
       </property>
       <property name="shortcut">
