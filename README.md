@@ -9,7 +9,7 @@
 <h2>Tela Principal</h2>
 <p>Após realizar o login, você ira colocar um CR ou um Estrutura pra gerar os QRCodes</p>
 <img src='resources/prints/main.png'>
-<p>Botão para reporte de bugs // problemas adicionado</p>
+<p>Botão para reporte de <b>bugs e/ou problemas</b> adicionado</p>
 <br></br>
 
 <p>Adicionando a estrutura é só clicar em <b>Gerar</b></p>
