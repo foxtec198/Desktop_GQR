@@ -11,7 +11,8 @@ __pycache__/
 build/
 develop-eggs/
 dist/
-resources/QRCodes/
+resources/
+QRCodes/
 downloads/
 eggs/
 .eggs/
