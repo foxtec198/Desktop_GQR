@@ -355,6 +355,16 @@ color: #333;</string>
           </spacer>
          </item>
          <item>
+          <widget class="QRadioButton" name="radioButton_6">
+           <property name="text">
+            <string>Grupo GPS</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QRadioButton" name="radioButton_4">
            <property name="text">
             <string>Force</string>
@@ -376,12 +386,9 @@ color: #333;</string>
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="radioButton_6">
+          <widget class="QRadioButton" name="radioButton_5">
            <property name="text">
-            <string>Grupo GPS</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
+            <string>OnSeg</string>
            </property>
           </widget>
          </item>
@@ -390,12 +397,8 @@ color: #333;</string>
            <property name="text">
             <string>Minimalista</string>
            </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="radioButton_5">
-           <property name="text">
-            <string>OnSeg</string>
+           <property name="shortcut">
+            <string>Ctrl+M</string>
            </property>
           </widget>
          </item>
