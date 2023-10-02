@@ -315,7 +315,7 @@ color: #333;</string>
        </widget>
       </item>
       <item>
-       <widget class="QFrame" name="frame_2">
+       <widget class="QFrame" name="QRCode">
         <property name="maximumSize">
          <size>
           <width>200</width>
@@ -355,7 +355,7 @@ color: #333;</string>
           </spacer>
          </item>
          <item>
-          <widget class="QRadioButton" name="radioButton_6">
+          <widget class="QRadioButton" name="TradRadio">
            <property name="text">
             <string>Grupo GPS</string>
            </property>
@@ -365,35 +365,35 @@ color: #333;</string>
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="radioButton_4">
+          <widget class="QRadioButton" name="ForceRadio">
            <property name="text">
             <string>Force</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="radioButton_3">
+          <widget class="QRadioButton" name="PoliRadio">
            <property name="text">
             <string>Poliservice</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="radioButton">
+          <widget class="QRadioButton" name="TopRadio">
            <property name="text">
             <string>Topservice</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="radioButton_5">
+          <widget class="QRadioButton" name="OnSegRadio">
            <property name="text">
             <string>OnSeg</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="radioButton_2">
+          <widget class="QRadioButton" name="MiniRadio">
            <property name="text">
             <string>Minimalista</string>
            </property>
@@ -421,7 +421,7 @@ color: #333;</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_4">
          <item>
-          <widget class="QLabel" name="label_3">
+          <widget class="QLabel" name="imgLbl">
            <property name="maximumSize">
             <size>
              <width>250</width>
