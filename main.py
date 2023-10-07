@@ -50,6 +50,7 @@ class App():
                 self.loginWin.entryUser.setText(u[0])
                 self.loginWin.entryPasw.setText(u[1])
                 self.loginWin.saveUser.setChecked(True)
+                
         self.app.exec()
         
     def msg(self, *args):
@@ -123,6 +124,7 @@ class App():
         TopRadio = self.mainWin.TopRadio
         TradRadio = self.mainWin.TradRadio
         imgLbl = self.mainWin.imgLbl
+        # imgLbl
         
         if ForceRadio.isChecked(): self.modelo = 'modeloForce'
         if MiniRadio.isChecked(): self.modelo = 'modeloMini'

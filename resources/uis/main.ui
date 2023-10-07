@@ -12,7 +12,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>500</width>
     <height>400</height>
    </rect>
   </property>
@@ -24,13 +24,13 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>800</width>
+    <width>500</width>
     <height>400</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>800</width>
+    <width>500</width>
     <height>400</height>
    </size>
   </property>
@@ -399,43 +399,6 @@ color: #333;</string>
            </property>
            <property name="shortcut">
             <string>Ctrl+M</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <widget class="QFrame" name="frame_3">
-        <property name="maximumSize">
-         <size>
-          <width>250</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout_4">
-         <item>
-          <widget class="QLabel" name="imgLbl">
-           <property name="maximumSize">
-            <size>
-             <width>250</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="pixmap">
-            <pixmap>../scr/modelo.png</pixmap>
-           </property>
-           <property name="scaledContents">
-            <bool>true</bool>
            </property>
           </widget>
          </item>
