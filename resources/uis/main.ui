@@ -208,6 +208,27 @@
           </widget>
          </item>
          <item>
+          <widget class="QLineEdit" name="nivelEntry">
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
+           <property name="toolTip">
+            <string>Numero do nivel</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="placeholderText">
+            <string>Nivel da Estrutura</string>
+           </property>
+           <property name="clearButtonEnabled">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QLineEdit" name="estruturaEntry">
            <property name="font">
             <font>
@@ -218,7 +239,7 @@
             <string>Adicione um CR ou uma Estrutura Especifica</string>
            </property>
            <property name="placeholderText">
-            <string>Estrutura</string>
+            <string>Estrutura ou CR</string>
            </property>
           </widget>
          </item>
@@ -346,10 +367,13 @@ color: #333;</string>
            <property name="orientation">
             <enum>Qt::Vertical</enum>
            </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Expanding</enum>
+           </property>
            <property name="sizeHint" stdset="0">
             <size>
              <width>20</width>
-             <height>40</height>
+             <height>20</height>
             </size>
            </property>
           </spacer>

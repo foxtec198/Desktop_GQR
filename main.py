@@ -6,7 +6,6 @@
 # ===============================================================================
 # ===============================================================================
 
-from sys import exit
 from os import system, makedirs, mkdir, remove, listdir 
 from pyodbc import connect as sql# Connect SQL
 from yaml import load, FullLoader# Yaml de dados
@@ -28,9 +27,8 @@ class App():
         self.conn = connect('resources/scr/dd.db')
         self.c = self.conn.cursor()
         self.c.execute("CREATE TABLE IF NOT EXISTS userSalvo(Id INTEGER PRIMARY KEY AUTOINCREMENT, user TEXT, pasw TEXT, verify INT)")
-        set() #seta modo escuro 
+        set() # seta modo escuro 
         
-        # Call de funções
         # LOGIN
         self.loginWin.btnLogin.clicked.connect(self.main)
         
@@ -79,12 +77,13 @@ class App():
             self.msg(self.loginWin, 'Erro!', 'Os dados de login não\npode estar em branco !!!')
             
     def gerarQrCode(self):
-        self.estrutura = self.mainWin.estruturaEntry.text
-        if self.estrutura() != '':
+        self.estrutura = self.mainWin.estruturaEntry.text()
+        self.nivel = int(self.mainWin.nivelEntry.text())
+        if self.estrutura != '':
             self.msg(self.mainWin, 'Sucesso', 'Gerando QR Codes...')
-            self.exec(self.user, self.pasw, self.estrutura())
+            self.exec(self.user, self.pasw, self.estrutura)
             self.msg(self.mainWin, 'Sucesso', f'QRCodes gerados com sucesso - {self.nomeDir}')
-        elif self.estrutura() == '':
+        elif self.estrutura == '':
             self.msg(self.mainWin, 'Erro!', 'A estrutura não pode estar em branco')
         else:
             self.msg(self.mainWin, 'Erro!', 'Algo deu errado confira o Login!')
@@ -123,8 +122,6 @@ class App():
         PoliRadio = self.mainWin.PoliRadio
         TopRadio = self.mainWin.TopRadio
         TradRadio = self.mainWin.TradRadio
-        imgLbl = self.mainWin.imgLbl
-        # imgLbl
         
         if ForceRadio.isChecked(): self.modelo = 'modeloForce'
         if MiniRadio.isChecked(): self.modelo = 'modeloMini'
@@ -214,8 +211,7 @@ class App():
         self.c = self.conn.cursor()
         
     def consultaSeparada(self):
-        self.cons = f"SELECT Descricao as Nome, QRCode, Grupo FROM Estrutura WHERE HierarquiaDescricao LIKE '%{self.estrutura}%'"
+        self.cons = f"SELECT Descricao as Nome, QRCode, Grupo FROM Estrutura WHERE HierarquiaDescricao LIKE '%{self.estrutura}%' and Nivel >= {self.nivel}"
         self.estrutura = self.c.execute(self.cons).fetchall()
-        
         
 App()
