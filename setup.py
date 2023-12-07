@@ -27,5 +27,10 @@ setup(
     version = '1.0',
     description = 'Gera QR Codes para utilizacao',
     options = {"build_exe":build_exe_options},
-    executables = [Executable('main.py', base=base)]
+    executables = [Executable(
+        'main.py', 
+        icon='resources/scr/icon.ico', 
+        base=base
+        )
+                   ]
 )
