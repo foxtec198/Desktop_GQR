@@ -208,6 +208,27 @@
           </widget>
          </item>
          <item>
+          <widget class="QLineEdit" name="estruturaEntry">
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::StrongFocus</enum>
+           </property>
+           <property name="toolTip">
+            <string>Adicione um CR ou uma Estrutura Especifica</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="placeholderText">
+            <string>CR</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QLineEdit" name="nivelEntry">
            <property name="font">
             <font>
@@ -220,26 +241,14 @@
            <property name="text">
             <string/>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
            <property name="placeholderText">
-            <string>Nivel da Estrutura</string>
+            <string>Estrutura</string>
            </property>
            <property name="clearButtonEnabled">
             <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="estruturaEntry">
-           <property name="font">
-            <font>
-             <pointsize>14</pointsize>
-            </font>
-           </property>
-           <property name="toolTip">
-            <string>Adicione um CR ou uma Estrutura Especifica</string>
-           </property>
-           <property name="placeholderText">
-            <string>Estrutura ou CR</string>
            </property>
           </widget>
          </item>

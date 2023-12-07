@@ -77,11 +77,14 @@ class App():
             self.msg(self.loginWin, 'Erro!', 'Os dados de login não\npode estar em branco !!!')
             
     def gerarQrCode(self):
-        self.estrutura = self.mainWin.estruturaEntry.text()
-        self.nivel = int(self.mainWin.nivelEntry.text())
-        if self.estrutura != '':
+        self.CR = self.mainWin.estruturaEntry.text()
+        self.nivel = self.mainWin.nivelEntry.text()
+        if self.nivel == '':
+            self.nivel = 3
+        self.nivel = 3 + int(self.nivel)
+        if self.CR != '':
             self.msg(self.mainWin, 'Sucesso', 'Gerando QR Codes...')
-            self.exec(self.user, self.pasw, self.estrutura)
+            self.exec(self.user, self.pasw, self.CR)
             self.msg(self.mainWin, 'Sucesso', f'QRCodes gerados com sucesso - {self.nomeDir}')
         elif self.estrutura == '':
             self.msg(self.mainWin, 'Erro!', 'A estrutura não pode estar em branco')
@@ -211,7 +214,12 @@ class App():
         self.c = self.conn.cursor()
         
     def consultaSeparada(self):
-        self.cons = f"SELECT Descricao as Nome, QRCode, Grupo FROM Estrutura WHERE HierarquiaDescricao LIKE '%{self.estrutura}%' and Nivel >= {self.nivel}"
+        self.cons = f"""SELECT 
+        E.Descricao as Nome, E.QRCode, E.Grupo
+        FROM Estrutura E
+        INNER JOIN DW_Vista.dbo.DM_Estrutura as Es on Es.Id_Estrutura = Id
+        WHERE Es.CRNo = {self.estrutura}
+        AND E.Nivel >= {self.nivel} """
         self.estrutura = self.c.execute(self.cons).fetchall()
         
 App()
