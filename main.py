@@ -52,7 +52,6 @@ class App():
         self.app.exec()
         
     def msg(self, *args):
-        # WIN - TITULO - MENSAGEM 
         QtWidgets.QMessageBox.about(args[0], args[1], args[2])
     
     def gitHub(self):
@@ -69,8 +68,8 @@ class App():
             
         if self.user != '' and self.pasw != '':
             try:
-                self.loginWin.close()
                 self.mainWin.show()
+                self.loginWin.close()
             except:
                 self.msg(self.loginWin, 'Erro de Login', 'Dados Incorretos // VPN não Ativo')
         else:

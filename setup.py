@@ -3,10 +3,11 @@ from cx_Freeze import setup, Executable
 
 build_exe_options = {
     "packages":[
-        "os","time","sqlite3"
+        "os","time",
     ],
     "includes":[
         "PyQt5",
+        "sqlite3",
         "pyodbc",
         "yaml",
         "segno",
@@ -24,7 +25,7 @@ if sys.platform == "win32":
     
 setup(
     name = 'Gerador de QR Code',
-    version = '1.0',
+    version = '1.5',
     description = 'Gera QR Codes para utilizacao',
     options = {"build_exe":build_exe_options},
     executables = [Executable(
