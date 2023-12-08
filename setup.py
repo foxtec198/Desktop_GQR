@@ -3,13 +3,11 @@ from cx_Freeze import setup, Executable
 
 build_exe_options = {
     "packages":[
-        "os","time",
+        "os","time","sqlite3"
     ],
     "includes":[
         "PyQt5",
-        "sqlite3",
         "pyodbc",
-        "yaml",
         "segno",
         "PIL",
         "PyPDF2",
