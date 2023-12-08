@@ -62,12 +62,28 @@ class GeradorQR():
     
     def validar(self):
         ...
-    
+    def gerar(self):
+        ForceRadio = self.main.ForceRadio
+        MiniRadio = self.main.MiniRadio
+        OnSegRadio = self.main.OnSegRadio
+        PoliRadio = self.main.PoliRadio
+        TopRadio = self.main.TopRadio
+        TradRadio = self.main.TradRadio
+        
+        if ForceRadio.isChecked(): self.modelo = 'modeloForce'
+        if MiniRadio.isChecked(): self.modelo = 'modeloMini'
+        if OnSegRadio.isChecked(): self.modelo = 'modeloOnSeg'
+        if PoliRadio.isChecked(): self.modelo = 'modeloPoli'
+        if TopRadio.isChecked(): self.modelo = 'modeloTop'
+        if TradRadio.isChecked(): self.modelo = 'modeloTrad'
+        
+        
+        
     def abrirPastaDeGeracao(self):
-        ...
+        system('Explorer resources\QRCodes')
         
     def gitHub(self):
-        ...
+        on('https://github.com/foxtec198/GeradorQR/issues/new')
     
     def action(self, consulta):
         self.c.execute(consulta)
