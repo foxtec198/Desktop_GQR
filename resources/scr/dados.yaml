@@ -1,6 +1,0 @@
-servidor:
-  '10.56.6.56'
-db:
-  'Vista_Replication_PRD'
-db02:
-  'DW_Vista'
