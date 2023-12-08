@@ -208,7 +208,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="estruturaEntry">
+          <widget class="QLineEdit" name="crEntry">
            <property name="font">
             <font>
              <pointsize>14</pointsize>
@@ -245,7 +245,7 @@
             <set>Qt::AlignCenter</set>
            </property>
            <property name="placeholderText">
-            <string>Estrutura</string>
+            <string>Nivel</string>
            </property>
            <property name="clearButtonEnabled">
             <bool>false</bool>

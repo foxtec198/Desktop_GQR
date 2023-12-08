@@ -1,6 +1,5 @@
 from os import system, makedirs, mkdir, remove, listdir 
 from pyodbc import connect as sql# Connect SQL
-from yaml import load, FullLoader# Yaml de dados
 from segno import make_qr # Gerador de qr
 from time import strftime as st # Data e Hora Atual
 from PIL import Image, ImageDraw, ImageFont
@@ -23,7 +22,7 @@ class GeradorQR():
         
         self.login.btnLogin.clicked.connect(self.realizarLogin)
         
-        self.main.btnGerarQR.clicked.connect(self.validar)
+        self.main.btnGerarQR.clicked.connect(self.gerar)
         self.main.btnAbrirPasta.clicked.connect(self.abrirPastaDeGeracao)
         self.main.gitBtn.clicked.connect(self.gitHub)
         
@@ -60,9 +59,70 @@ class GeradorQR():
         except:
             self.msg(self.login, 'Erro de Login!','Confirme o VPN e/ou suas Credenciais!!! ')
     
-    def validar(self):
-        ...
+    def logicaDeGeração(self):
+        cont = 0
+        for c in self.estrutura:
+            qrc = c[1] # definindo o qr code
+            self.nomeLocal = c[0] # o nome do sublocal
+            self.nomeLocal = self.nomeLocal.replace('/','') # removendo barras para n ocasionar erro
+            qrcode = make_qr(qrc) # gerando o qrcode.png
+            qrLocal = f'{self.nomeDir}/{self.nomeLocal}.png' # definido a estrutura do diretorio
+            qrcode.save(qrLocal, scale=10) #salvando o qrcode no diretorio
+            qrImg = Image.open(qrLocal) # Abrindo o qrcode com o PIL
+            modelo = Image.open(f'resources/scr/{self.modelo}.png') # Abrindo o modelo padrão com o PIL
+            merge = Image.new('RGBA', modelo.size) # Abrinda uma nova imagem para edição
+            x = int((modelo.size[0]-qrImg.size[0])/2) # Valor Dinamico
+            merge.paste(modelo) # Carrega o Modelo
+            merge.paste(qrImg, (x, 350)) # Cola o qr code no valor relativo
+            txt = Image.open('resources/scr/600.png') # Versionamento de texto
+            dw = ImageDraw.Draw(txt) # Escreve a estrutura e centraliza
+            fnt = ImageFont.truetype('resources/scr/arial_narrow_7.ttf', 35) # Font and size
+            x, y = dw.textsize(self.nomeLocal, fnt) # Aplica os valores
+            xt = (600-x)/2 # Valor relativo do Texto
+            dw.text((xt, 40), self.nomeLocal, font=fnt, fill='black', align='center') # Fazendo o merge do Texto no modelo com o qrcode
+            
+            # Salva o arquivo!
+            txt.save('resources/scr/texto.png')
+            imgt = Image.open('resources/scr/texto.png')
+            x = int((modelo.size[0]-imgt.size[0])/2)
+            merge.paste(imgt, (x, 200))
+            merge.save(qrLocal)
+            
+            # Transforma o arquivo em pdf com todos os QRs
+            img = Image.open(qrLocal)
+            x, y = img.size
+            self.nomePdf = f'{self.nomeDir}/{self.nomeLocal}.pdf'
+            pdf = canvas.Canvas(self.nomePdf, pagesize=(x, y))
+            pdf.drawImage(qrLocal, 0,0)
+            pdf.save()
+            cont += 1
+            
+        # MERGE - Mescla os PDF's
+        dir = listdir(self.nomeDir)
+        mg = PdfMerger()
+        for i in dir:
+            if '.pdf' in i:
+                with open(f'{self.nomeDir}/{i}', 'rb') as arq:
+                    dados = PdfReader(arq)
+                    mg.append(dados)
+        mg.write(f'{self.nomeDir}/EstruturaCompleta.pdf')
+        mg.close()
+        
+        # REMOVE - Remove copias!
+        dir = listdir(self.nomeDir)
+        for i in dir:
+            if '.pdf' in i and i != 'EstruturaCompleta.pdf':
+                remove(f'{self.nomeDir}/{i}')
+    
     def gerar(self):
+        self.CR = self.main.crEntry.text()
+        self.nivel = int(self.main.nivelEntry.text())
+        
+        if self.nivel != '':
+            self.nivel += 3
+        elif self.nivel == '':
+            self.nivel = 3
+
         ForceRadio = self.main.ForceRadio
         MiniRadio = self.main.MiniRadio
         OnSegRadio = self.main.OnSegRadio
@@ -77,7 +137,23 @@ class GeradorQR():
         if TopRadio.isChecked(): self.modelo = 'modeloTop'
         if TradRadio.isChecked(): self.modelo = 'modeloTrad'
         
+        self.cons = f"""
+        SELECT E.Descricao as Nome, E.QRCode, E.Grupo
+        FROM Estrutura E
+        INNER JOIN DW_Vista.dbo.DM_Estrutura as Es on Es.Id_Estrutura = Id
+        WHERE Es.CRNo = {self.CR}
+        AND E.Nivel >= {self.nivel}"""
         
+        self.estrutura = self.c2.execute(self.cons).fetchall()
+        self.data = st('%d-%m_%H-%M-%S')
+        for i in self.estrutura:self.nomeGrupo=i[2]
+        try: mkdir('resources/QRCodes')
+        except: ...
+        self.nomeDir = f'resources/QRCodes/{self.nomeGrupo}_{self.data}'
+        makedirs(self.nomeDir)
+        
+        self.logicaDeGeração()
+        self.msg(self.main, 'Sucesso!',f'QR Codes gerados com sucesso \n {self.nomeGrupo}')
         
     def abrirPastaDeGeracao(self):
         system('Explorer resources\QRCodes')
