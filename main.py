@@ -14,8 +14,8 @@ class GeradorQR():
     def run(self):
         self.app = qw.QApplication([])
         
-        self.main = uic.loadUi('resources/uis/main.ui')
         self.login = uic.loadUi('resources/uis/login.ui')
+        self.main = uic.loadUi('resources/uis/main.ui')
         set()
         self.connL = connect('resources/scr/dd.db')
         self.c = self.connL.cursor()
@@ -49,13 +49,11 @@ class GeradorQR():
             self.action(f"INSERT INTO USERS(user, pwd, servidor)VALUES('{self.user}','{self.pwd}','{self.server}')")
         else:
             self.action(f'DELETE FROM USERS')
-        
-        try:
-            self.conn = sql(f"DRIVER=SQL Server;SERVER={self.server};UID={self.user};PWD={self.pwd}")
-            self.c2 = self.conn.cursor()
-            self.main.show()
-            self.login.close()
-        except: ... 
+            
+        self.conn = sql(f"DRIVER=SQL Server;SERVER={self.server};UID={self.user};PWD={self.pwd}")
+        self.c2 = self.conn.cursor()
+        self.main.show()
+        self.login.close()
         
     def logicaDeGeração(self):
         cont = 0

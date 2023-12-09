@@ -14,6 +14,9 @@ build_exe_options = {
         "reportlab",
         "qdarktheme",
         "webbrowser",
+    ],
+    "include_files":[
+        "resources"
     ]
 }
 
