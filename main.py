@@ -53,12 +53,10 @@ class GeradorQR():
         try:
             self.conn = sql(f"DRIVER=SQL Server;SERVER={self.server};UID={self.user};PWD={self.pwd}")
             self.c2 = self.conn.cursor()
-            self.msg(self.login, 'Logado com Sucesso!', f'Logado com sucesso, bem vindo {nome[0]}')
             self.main.show()
             self.login.close()
-        except:
-            self.msg(self.login, 'Erro de Login!','Confirme o VPN e/ou suas Credenciais!!! ')
-    
+        except: ... 
+        
     def logicaDeGeração(self):
         cont = 0
         for c in self.estrutura:
@@ -153,7 +151,6 @@ class GeradorQR():
         makedirs(self.nomeDir)
         
         self.logicaDeGeração()
-        self.msg(self.main, 'Sucesso!',f'QR Codes gerados com sucesso \n {self.nomeGrupo}')
         
     def abrirPastaDeGeracao(self):
         system('Explorer resources\QRCodes')
