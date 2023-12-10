@@ -3,9 +3,10 @@ from cx_Freeze import setup, Executable
 
 build_exe_options = {
     "packages":[
-        "os","time","sqlite3"
+        "os","time","logging"
     ],
     "includes":[
+        "sqlite3",
         "PyQt5",
         "pyodbc",
         "segno",

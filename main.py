@@ -9,6 +9,14 @@ from PyQt5 import uic, QtWidgets as qw
 from qdarktheme import setup_theme as set
 from webbrowser import open_new_tab as on
 from sqlite3 import connect
+from logging import DEBUG, basicConfig, error, info, debug
+
+basicConfig(
+    level=DEBUG,
+    filename='resources/logs/my_log.log',
+    filemode='a',
+    format='%(levelname)s: %(asctime)s -- %(message)s - %(module)s '
+)
 
 class GeradorQR():
     def run(self):
@@ -17,7 +25,7 @@ class GeradorQR():
         self.login = uic.loadUi('resources/uis/login.ui')
         self.main = uic.loadUi('resources/uis/main.ui')
         set()
-        self.connL = connect('resources/scr/dd.db')
+        self.connL = connect(r'resources\scr\dd.db')
         self.c = self.connL.cursor()
         
         self.login.btnLogin.clicked.connect(self.realizarLogin)
@@ -44,17 +52,27 @@ class GeradorQR():
         self.pwd = self.login.entryPasw.text()
         nome = self.user.replace('.', ' ')
         nome = nome.split()
-        
-        if self.login.saveUser.isChecked():
-            self.action(f"INSERT INTO USERS(user, pwd, servidor)VALUES('{self.user}','{self.pwd}','{self.server}')")
-        else:
-            self.action(f'DELETE FROM USERS')
+        # info()
+        # error()resources/scr/icon.ico
+        try:
+            if self.login.saveUser.isChecked():
+                self.action(f"INSERT INTO USERS(user, pwd, servidor)VALUES('{self.user}','{self.pwd}','{self.server}')")
+                debug('Nomes adicionados')
+            else:
+                self.action(f'DELETE FROM USERS')
+                debug('Realizado o delete')
+
+            self.conn = sql(f"DRIVER=SQL Server;SERVER={self.server};UID={self.user};PWD={self.pwd}")
+            self.c2 = self.conn.cursor()
+            info('Deu certo o login')
             
-        self.conn = sql(f"DRIVER=SQL Server;SERVER={self.server};UID={self.user};PWD={self.pwd}")
-        self.c2 = self.conn.cursor()
+        except:
+            self.msg(self.login, 'Erro','Erro com as credenciais')
+            error('Error com o login')
+            
         self.main.show()
         self.login.close()
-        
+            
     def logicaDeGeração(self):
         cont = 0
         for c in self.estrutura:
@@ -62,24 +80,24 @@ class GeradorQR():
             self.nomeLocal = c[0] # o nome do sublocal
             self.nomeLocal = self.nomeLocal.replace('/','') # removendo barras para n ocasionar erro
             qrcode = make_qr(qrc) # gerando o qrcode.png
-            qrLocal = f'{self.nomeDir}/{self.nomeLocal}.png' # definido a estrutura do diretorio
+            qrLocal = f'{self.nomeDir}\{self.nomeLocal}.png' # definido a estrutura do diretorio
             qrcode.save(qrLocal, scale=10) #salvando o qrcode no diretorio
             qrImg = Image.open(qrLocal) # Abrindo o qrcode com o PIL
-            modelo = Image.open(f'resources/scr/{self.modelo}.png') # Abrindo o modelo padrão com o PIL
+            modelo = Image.open(f'resources\scr\{self.modelo}.png') # Abrindo o modelo padrão com o PIL
             merge = Image.new('RGBA', modelo.size) # Abrinda uma nova imagem para edição
             x = int((modelo.size[0]-qrImg.size[0])/2) # Valor Dinamico
             merge.paste(modelo) # Carrega o Modelo
             merge.paste(qrImg, (x, 350)) # Cola o qr code no valor relativo
-            txt = Image.open('resources/scr/600.png') # Versionamento de texto
+            txt = Image.open(r'resources\scr\600.png') # Versionamento de texto
             dw = ImageDraw.Draw(txt) # Escreve a estrutura e centraliza
-            fnt = ImageFont.truetype('resources/scr/arial_narrow_7.ttf', 35) # Font and size
+            fnt = ImageFont.truetype(r'resources\scr\arial_narrow_7.ttf', 35) # Font and size
             x, y = dw.textsize(self.nomeLocal, fnt) # Aplica os valores
             xt = (600-x)/2 # Valor relativo do Texto
             dw.text((xt, 40), self.nomeLocal, font=fnt, fill='black', align='center') # Fazendo o merge do Texto no modelo com o qrcode
             
             # Salva o arquivo!
-            txt.save('resources/scr/texto.png')
-            imgt = Image.open('resources/scr/texto.png')
+            txt.save('resources\scr\texto.png')
+            imgt = Image.open('resources\scr\texto.png')
             x = int((modelo.size[0]-imgt.size[0])/2)
             merge.paste(imgt, (x, 200))
             merge.save(qrLocal)
@@ -87,7 +105,7 @@ class GeradorQR():
             # Transforma o arquivo em pdf com todos os QRs
             img = Image.open(qrLocal)
             x, y = img.size
-            self.nomePdf = f'{self.nomeDir}/{self.nomeLocal}.pdf'
+            self.nomePdf = f'{self.nomeDir}\{self.nomeLocal}.pdf'
             pdf = canvas.Canvas(self.nomePdf, pagesize=(x, y))
             pdf.drawImage(qrLocal, 0,0)
             pdf.save()
@@ -98,17 +116,17 @@ class GeradorQR():
         mg = PdfMerger()
         for i in dir:
             if '.pdf' in i:
-                with open(f'{self.nomeDir}/{i}', 'rb') as arq:
+                with open(f'{self.nomeDir}\{i}', 'rb') as arq:
                     dados = PdfReader(arq)
                     mg.append(dados)
-        mg.write(f'{self.nomeDir}/EstruturaCompleta.pdf')
+        mg.write(f'{self.nomeDir}\EstruturaCompleta.pdf')
         mg.close()
         
         # REMOVE - Remove copias!
         dir = listdir(self.nomeDir)
         for i in dir:
             if '.pdf' in i and i != 'EstruturaCompleta.pdf':
-                remove(f'{self.nomeDir}/{i}')
+                remove(f'{self.nomeDir}\{i}')
     
     def gerar(self):
         self.CR = self.main.crEntry.text()
@@ -133,8 +151,7 @@ class GeradorQR():
         if TopRadio.isChecked(): self.modelo = 'modeloTop'
         if TradRadio.isChecked(): self.modelo = 'modeloTrad'
         
-        self.cons = f"""
-        SELECT E.Descricao as Nome, E.QRCode, E.Grupo
+        self.cons = f"""SELECT E.Descricao as Nome, E.QRCode, E.Grupo
         FROM Estrutura E
         INNER JOIN DW_Vista.dbo.DM_Estrutura as Es on Es.Id_Estrutura = Id
         WHERE Es.CRNo = {self.CR}
@@ -143,14 +160,16 @@ class GeradorQR():
         self.estrutura = self.c2.execute(self.cons).fetchall()
         self.data = st('%d-%m_%H-%M-%S')
         for i in self.estrutura:self.nomeGrupo=i[2]
-        try: mkdir('resources/QRCodes')
+        try: mkdir(r'resources\QRCodes')
         except: ...
-        self.nomeDir = f'resources/QRCodes/{self.nomeGrupo}_{self.data}'
+        self.nomeDir = f'resources\QRCodes\{self.nomeGrupo}_{self.data}'
         makedirs(self.nomeDir)
         
         self.logicaDeGeração()
         
     def abrirPastaDeGeracao(self):
+        try: mkdir(r'resources\QRCodes')
+        except: ...
         system('Explorer resources\QRCodes')
         
     def gitHub(self):
