@@ -9,12 +9,8 @@ from PyQt5 import uic, QtWidgets as qw
 from qdarktheme import setup_theme as set
 from webbrowser import open_new_tab as on
 from sqlite3 import connect
-from logging import WARNING, basicConfig
-
-basicConfig(level=WARNING,
-    filename='resources/logs/my_log.log',
-    filemode='w',
-    format='%(levelname)s: %(asctime)s -- %(message)s - %(module)s - %(process)s')
+from win10toast import ToastNotifier
+import cx_Logging
 
 class GeradorQR():
     def run(self):
@@ -63,7 +59,7 @@ class GeradorQR():
             self.login.close()
             
         except:
-            self.msg(self.login, 'Erro','Erro com as credenciais')
+            self.nt('Erro','Erro com as credenciais')
             
     def logicaDeGeração(self):
         cont = 0
@@ -143,9 +139,8 @@ class GeradorQR():
         if TopRadio.isChecked(): self.modelo = 'modeloTop'
         if TradRadio.isChecked(): self.modelo = 'modeloTrad'
         
-        self.cons = f"""SELECT E.Descricao as Nome, E.QRCode, E.Grupo FROM Estrutura E INNER JOIN DW_Vista.dbo.DM_Estrutura as Es on Es.Id_Estrutura = Id WHERE Es.CRNo = {self.CR} AND E.Nivel >= {self.nivel}"""
-        self.estrutura = self.c2.execute(self.cons).fetchall()
-        self.cr2 = self.c2.execute(f"""select Nivel_03 from DW_Vista.dbo.DM_Estrutura with(nolock) Es where Es.CRNo = '{self.CR}'""").fetchone()[0]
+        self.estrutura = self.c2.execute(f"SELECT E.Descricao as Nome, E.QRCode, E.Grupo FROM Estrutura E INNER JOIN DW_Vista.dbo.DM_Estrutura as Es on Es.Id_Estrutura = Id WHERE Es.CRNo = {self.CR} AND E.Nivel >= {self.nivel}").fetchall()
+        self.cr2 = self.c2.execute(f"select Nivel_03 from DW_Vista.dbo.DM_Estrutura Es with(nolock) where Es.CRNo = '{self.CR}'").fetchone()[0]
         
         self.data = st('%d-%m_%H-%M-%S')
         try: mkdir(r'resources\QRCodes')
@@ -154,7 +149,7 @@ class GeradorQR():
         makedirs(self.nomeDir)
         
         self.logicaDeGeração()
-        self.msg(self.main, 'Sucesso!',f'QR Codes gerados com sucesso!!! \n {self.cr2}')
+        self.nt('Sucesso!',f'QR Codes gerados com sucesso!!! \n {self.cr2}')
         
     def abrirPastaDeGeracao(self):
         try: mkdir(r'resources\QRCodes')
@@ -170,5 +165,9 @@ class GeradorQR():
          
     def msg(self, win, title, text):
         qw.QMessageBox.about(win, title, text)
-          
+
+    def nt(self, title, text):
+        n = ToastNotifier()
+        n.show_toast(title, text, icon_path="resources/scr/icon.ico", duration=10)
+
 GeradorQR().run()

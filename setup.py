@@ -3,7 +3,7 @@ from cx_Freeze import setup, Executable
 
 build_exe_options = {
     "packages":[
-        "os","time","logging"
+        "os","time"
     ],
     "includes":[
         "sqlite3",
