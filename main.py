@@ -1,7 +1,7 @@
 from os import system, makedirs, mkdir, remove, listdir 
-from pyodbc import connect as sql# Connect SQL
-from segno import make_qr # Gerador de qr
-from time import strftime as st # Data e Hora Atual
+from pyodbc import connect as sql
+from segno import make_qr 
+from time import strftime as st
 from PIL import Image, ImageDraw, ImageFont
 from PyPDF2 import PdfReader, PdfMerger
 from reportlab.pdfgen import canvas
@@ -9,14 +9,12 @@ from PyQt5 import uic, QtWidgets as qw
 from qdarktheme import setup_theme as set
 from webbrowser import open_new_tab as on
 from sqlite3 import connect
-from logging import DEBUG, basicConfig, error, info, debug
+from logging import WARNING, basicConfig
 
-basicConfig(
-    level=DEBUG,
+basicConfig(level=WARNING,
     filename='resources/logs/my_log.log',
-    filemode='a',
-    format='%(levelname)s: %(asctime)s -- %(message)s - %(module)s '
-)
+    filemode='w',
+    format='%(levelname)s: %(asctime)s -- %(message)s - %(module)s - %(process)s')
 
 class GeradorQR():
     def run(self):
@@ -52,26 +50,20 @@ class GeradorQR():
         self.pwd = self.login.entryPasw.text()
         nome = self.user.replace('.', ' ')
         nome = nome.split()
-        # info()
-        # error()resources/scr/icon.ico
+        
         try:
             if self.login.saveUser.isChecked():
                 self.action(f"INSERT INTO USERS(user, pwd, servidor)VALUES('{self.user}','{self.pwd}','{self.server}')")
-                debug('Nomes adicionados')
             else:
                 self.action(f'DELETE FROM USERS')
-                debug('Realizado o delete')
 
             self.conn = sql(f"DRIVER=SQL Server;SERVER={self.server};UID={self.user};PWD={self.pwd}")
             self.c2 = self.conn.cursor()
-            info('Deu certo o login')
+            self.main.show()
+            self.login.close()
             
         except:
             self.msg(self.login, 'Erro','Erro com as credenciais')
-            error('Error com o login')
-            
-        self.main.show()
-        self.login.close()
             
     def logicaDeGeração(self):
         cont = 0
@@ -96,8 +88,8 @@ class GeradorQR():
             dw.text((xt, 40), self.nomeLocal, font=fnt, fill='black', align='center') # Fazendo o merge do Texto no modelo com o qrcode
             
             # Salva o arquivo!
-            txt.save('resources\scr\texto.png')
-            imgt = Image.open('resources\scr\texto.png')
+            txt.save(r'resources\scr\texto.png')
+            imgt = Image.open(r'resources\scr\texto.png')
             x = int((modelo.size[0]-imgt.size[0])/2)
             merge.paste(imgt, (x, 200))
             merge.save(qrLocal)
@@ -130,10 +122,10 @@ class GeradorQR():
     
     def gerar(self):
         self.CR = self.main.crEntry.text()
-        self.nivel = int(self.main.nivelEntry.text())
+        self.nivel = self.main.nivelEntry.text()
         
         if self.nivel != '':
-            self.nivel += 3
+            self.nivel = 3 + int(self.nivel)
         elif self.nivel == '':
             self.nivel = 3
 
@@ -151,21 +143,18 @@ class GeradorQR():
         if TopRadio.isChecked(): self.modelo = 'modeloTop'
         if TradRadio.isChecked(): self.modelo = 'modeloTrad'
         
-        self.cons = f"""SELECT E.Descricao as Nome, E.QRCode, E.Grupo
-        FROM Estrutura E
-        INNER JOIN DW_Vista.dbo.DM_Estrutura as Es on Es.Id_Estrutura = Id
-        WHERE Es.CRNo = {self.CR}
-        AND E.Nivel >= {self.nivel}"""
-        
+        self.cons = f"""SELECT E.Descricao as Nome, E.QRCode, E.Grupo FROM Estrutura E INNER JOIN DW_Vista.dbo.DM_Estrutura as Es on Es.Id_Estrutura = Id WHERE Es.CRNo = {self.CR} AND E.Nivel >= {self.nivel}"""
         self.estrutura = self.c2.execute(self.cons).fetchall()
+        self.cr2 = self.c2.execute(f"""select Nivel_03 from DW_Vista.dbo.DM_Estrutura with(nolock) Es where Es.CRNo = '{self.CR}'""").fetchone()[0]
+        
         self.data = st('%d-%m_%H-%M-%S')
-        for i in self.estrutura:self.nomeGrupo=i[2]
         try: mkdir(r'resources\QRCodes')
         except: ...
-        self.nomeDir = f'resources\QRCodes\{self.nomeGrupo}_{self.data}'
+        self.nomeDir = f'resources\QRCodes\{self.cr2}_{self.data}'
         makedirs(self.nomeDir)
         
         self.logicaDeGeração()
+        self.msg(self.main, 'Sucesso!',f'QR Codes gerados com sucesso!!! \n {self.cr2}')
         
     def abrirPastaDeGeracao(self):
         try: mkdir(r'resources\QRCodes')
@@ -181,6 +170,5 @@ class GeradorQR():
          
     def msg(self, win, title, text):
         qw.QMessageBox.about(win, title, text)
-        
-    
+          
 GeradorQR().run()
