@@ -10,7 +10,6 @@ from qdarktheme import setup_theme as set
 from webbrowser import open_new_tab as on
 from sqlite3 import connect
 from win10toast import ToastNotifier
-import cx_Logging
 
 class GeradorQR():
     def run(self):
