@@ -9,10 +9,10 @@
   Versões
 </h2>
 <p>
-  Android: <a href=''>Preview</a>
+  Android: <a href='https://mega.nz/file/XZ0RQCSC#L92zijVJQUdF8Z9JM47zRU8g1poAM1aRumUBjEv5gtM'>Preview</a>
 </p>
 <p>
-  Windows: <a href=''>Baixe Aqui</a>
+  Windows: <a href='https://mega.nz/file/HdNyFJrL#7xuwIarPGr1x5PovauLBh7eXE6BR_ulqzqynJv1Av-k'>Baixe Aqui</a>
 </p>
 <p>
   Linux: <a>Em breve</a>
