@@ -1,7 +1,7 @@
 <image src= 'https://github.com/foxtec198/GeradorDeQrCode/assets/64221923/d1eae951-8619-42e5-8b74-af8563d4802b'>
 <br/>
 <h1><b>Gerador Automatico de QRCodes</b></h1>
-<p> - Windows: <a href='https://mega.nz/file/3V8hGRiB#N2BpWw3CIKMuCk4qAADzVWPhlcMP1ZszZZCnVRVtMbY'><b>Aqui</b></a></p>
+<p> - Windows: <a href='https://mega.nz/file/DYF1RbRQ#dS0lDQmQZ5TqiL04D1KKAxMNcNjCz-Kbo6WeCFH5F3k'><b>Aqui</b></a></p>
 <p> - Linux: <b>Em Breve</b></p>
 <p> - Android: <a href='https://mega.nz/file/XZ0RQCSC#L92zijVJQUdF8Z9JM47zRU8g1poAM1aRumUBjEv5gtM'><b>Preview</b></a></p>
 <p>Estou deixando acima um modelo para terem o Gostinho da Interface <b>Android</b> apenas, Para logar qualquer coisa que não seja nula, já server!</p>
