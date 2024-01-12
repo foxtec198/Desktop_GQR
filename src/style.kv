@@ -50,7 +50,7 @@
                     pwd.password = False if pwd.password == True else True
             MDSwitch:
                 id: slvUser
-                pos_hint: {'center_x': .28,'center_y': 0.35}
+                pos_hint: {'center_x': .2,'center_y': 0.35}
             MDLabel:
                 text: 'Salvar Usuário'
                 halign: 'center'    
@@ -61,7 +61,7 @@
                 icon: "login-variant"
                 pos_hint: {'center_x': 0.5,'center_y': 0.25}
                 size_hint: .8, None
-                on_release: 
+                on_release:
                     app.login()
             MDRoundFlatIconButton:
                 text: "Como Usar"
