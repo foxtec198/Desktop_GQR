@@ -1,6 +1,9 @@
 <image src= 'https://github.com/foxtec198/GeradorDeQrCode/assets/64221923/d1eae951-8619-42e5-8b74-af8563d4802b'>
 <br/>
 <h1><b>Gerador Automatico de QRCodes</b></h1>
+<p>Windows: <a href=''><b>Aqui</b></a></p>
+<p>Linux: <a href=''><b>Em Breve</b></a></p>
+<p>Android: <a href=''><b>Em Breve</b></a></p>
 
 <h2> Tela de Login: </h2>
 <p>Aqui você irá realizar o Login no App com suas credenciais do BD</p>
