@@ -102,7 +102,7 @@
                         pos_hint: {'center_x': 0.5,'center_y': 0.8}
                     MDTextField:
                         id: numCR
-                        icon_left: 'badge-account'
+                        icon_left: 'office-building-marker'
                         hint_text: 'Numero do CR'
                         helper_text: 'Ex: 13223'
                         input_type: 'number'
@@ -110,7 +110,7 @@
                         size_hint: .5, None
                     MDTextField:
                         id: numNivel
-                        icon_left: 'badge-account'
+                        icon_left: 'waves-arrow-up'
                         hint_text: 'Nivel do CR'
                         helper_text: 'Caso queira o CR todo, deixe em branco'
                         input_type: 'number'
@@ -150,7 +150,7 @@
                             source: 'src/modeloTrad.png'
                             size_hint: None, None
                             size: 130, 200
-                            pos_hint: {'center_x': .5,'center_y': .7}
+                            pos_hint: {'center_x': .5,'center_y': .5}
                     MDFloatLayout:
                         pos_hint: {'center_x': .5,'center_y': .5}
                         padding: 20
@@ -158,38 +158,38 @@
                         MDTextButton:
                             id: c1
                             text: 'Grupo GPS'
-                            pos_hint: {'center_x': .2,'center_y': .7}
+                            pos_hint: {'center_x': .2,'center_y': .6}
                             on_release:
                                 app.modelo('modeloTrad')
                                 modelo.source = 'src/modeloTrad.png'
                         MDTextButton:
                             text: 'PoliService'
-                            pos_hint: {'center_x': .2,'center_y': .55}
+                            pos_hint: {'center_x': .2,'center_y': .45}
                             on_release:
                                 app.modelo('modeloPoli')
                                 modelo.source = 'src/modeloPoli.png'
                         MDTextButton:
                             text: 'Force'
-                            pos_hint: {'center_x': .2,'center_y': .4}
+                            pos_hint: {'center_x': .2,'center_y': .3}
                             on_release:
                                 app.modelo('modeloForce')
                                 modelo.source = 'src/modeloForce.png'
 
                         MDTextButton:
                             text: 'OnSeg'
-                            pos_hint: {'center_x': .75,'center_y': .7}
+                            pos_hint: {'center_x': .75,'center_y': .6}
                             on_release:
                                 app.modelo('modeloOnseg')
                                 modelo.source = 'src/modeloOnSeg.png'
                         MDTextButton:
                             text: 'Top Service'
-                            pos_hint: {'center_x': .75,'center_y': .55}
+                            pos_hint: {'center_x': .75,'center_y': .45}
                             on_release:
                                 app.modelo('modeloTop')
                                 modelo.source = 'src/modeloTop.png'
                         MDTextButton:
                             text: 'Minimalista'
-                            pos_hint: {'center_x': .75,'center_y': .4}
+                            pos_hint: {'center_x': .75,'center_y': .3}
                             on_release:
                                 app.modelo('modeloMini')
                                 modelo.source = 'src/modeloMini.png'

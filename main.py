@@ -16,6 +16,8 @@ from sqlite3 import connect
 
 class Gerador:
     def __init__(self):
+        try: mkdir('./src')
+        except: ...
         self.lgConn = connect('src/dd.db')
         self.c = self.lgConn.cursor()
         try:
@@ -27,11 +29,14 @@ class Gerador:
         self.lgConn.commit()
 
     def ins(self, uid, pwd, server):
+        # self.cons()
+        idEx = self.dd[3]
+        self.c.execute(f'DELETE FROM USERS WHERE Id <> {idEx}')
         self.c.execute(f'INSERT INTO USERS(user, pwd, servidor) VALUES ("{uid}","{pwd}","{server}")')
         self.lgConn.commit()
     
     def cons(self):
-        self.dd = self.c.execute('SELECT servidor, user, pwd FROM USERS ORDER BY Id DESC').fetchone()
+        self.dd = self.c.execute('SELECT servidor, user, pwd, Id FROM USERS ORDER BY Id DESC').fetchone()
     
     def loginDB(self, server, uid, pwd, dv = '{SQL Server}'):
         if server != ' ' and uid != ' ' and pwd != ' ':
@@ -134,6 +139,8 @@ class Main(MDApp):
         self.th = self.theme_cls
         self.th.theme_style = 'Dark'
         self.th.primary_palette = 'Gray'
+        self.title = 'GeradorQR'
+        self.icon = 'src/icon.ico'
         sm = MDScreenManager()
         sm.add_widget(Login())
         sm.add_widget(MainWin())
@@ -154,9 +161,10 @@ class Main(MDApp):
         except: ...
             
     def login(self):
-        if not self.idsLogin.slvUser.active: g.excluir()
         if self.idsLogin.server.text != '' and self.idsLogin.user.text != '' and self.idsLogin.pwd.text != '':
-            try: 
+            try:
+                if self.idsLogin.slvUser.active: g.ins(uid=self.idsLogin.user.text ,pwd=self.idsLogin.pwd.text , server=self.idsLogin.server.text)
+                else: g.excluir()
                 g.loginDB(
                     server = self.idsLogin.server.text,
                     uid= self.idsLogin.user.text,
@@ -171,13 +179,15 @@ class Main(MDApp):
         self.md = modelo
         
     def gerar(self):
-        cr = self.idsMain.numCR.text
-        nv = self.idsMain.numNivel.text
-        if cr != '':
-            g.gerar(modelo=self.md, CR=cr, nivel=nv)
-            toast(f'QR codes gerados - {g.cr2}')
-        else: toast('Valores Invalidos, CR não pode estar em branco')
-    
+        try:
+            cr = int(self.idsMain.numCR.text)
+            nv = int(self.idsMain.numNivel.text)
+            if cr != '':
+                g.gerar(modelo=self.md, CR=cr, nivel=nv)
+                toast(f'QR codes gerados - {g.cr2}')
+            else: toast('Valores Invalidos, CR não pode estar em branco')
+        except:
+            toast('Informações invalidas, digite corretamente')
     def abrirPasta(self):
         g.abrirPastaDeGeracao()
     
