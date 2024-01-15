@@ -1,3 +1,4 @@
+# imports Front
 from kivymd.app import MDApp
 from kivymd.uix.screenmanager import MDScreenManager
 from kivymd.uix.screen import Screen
@@ -16,9 +17,9 @@ from sqlite3 import connect
 
 class Gerador:
     def __init__(self):
-        try: mkdir('./src')
+        try: mkdir('./_internal/src')
         except: ...
-        self.lgConn = connect('src/dd.db')
+        self.lgConn = connect('_internal/src/dd.db')
         self.c = self.lgConn.cursor()
         try:
             self.c.execute('CREATE TABLE IF NOT EXISTS USERS(Id INTEGER PRIIMARY KEY, user VARCHAR(100), pwd VARCHAR(100), servidor VARCHAR(100))')
@@ -29,7 +30,6 @@ class Gerador:
         self.lgConn.commit()
 
     def ins(self, uid, pwd, server):
-        # self.cons()
         idEx = self.dd[3]
         self.c.execute(f'DELETE FROM USERS WHERE Id <> {idEx}')
         self.c.execute(f'INSERT INTO USERS(user, pwd, servidor) VALUES ("{uid}","{pwd}","{server}")')
@@ -53,21 +53,21 @@ class Gerador:
             qrLocal = f'{self.nomeDir}\{self.nomeLocal}.png' # definido a estrutura do diretorio
             qrcode.save(qrLocal, scale=10) #salvando o qrcode no diretorio
             qrImg = Image.open(qrLocal) # Abrindo o qrcode com o PIL
-            modelo = Image.open(f'src\{self.modelo}.png') # Abrindo o modelo padrão com o PIL
+            modelo = Image.open(f'_internal/src\{self.modelo}.png') # Abrindo o modelo padrão com o PIL
             merge = Image.new('RGBA', modelo.size) # Abrinda uma nova imagem para edição
             x = int((modelo.size[0]-qrImg.size[0])/2) # Valor Dinamico
             merge.paste(modelo) # Carrega o Modelo
             merge.paste(qrImg, (x, 350)) # Cola o qr code no valor relativo
-            txt = Image.open(r'src\600.png') # Versionamento de texto
+            txt = Image.open(r'_internal/src/600.png') # Versionamento de texto
             dw = ImageDraw.Draw(txt) # Esrceve a estrutura e centraliza
-            fnt = ImageFont.truetype(r'src\arial_narrow_7.ttf', 35) # Font and size
+            fnt = ImageFont.truetype(r'_internal/src/arial_narrow_7.ttf', 35) # Font and size
             x = dw.textlength(self.nomeLocal, fnt) # Aplica os valores
             xt = (600-x)/2 # Valor relativo do Texto
             dw.text((xt, 40), self.nomeLocal, font=fnt, fill='black', align='center') # Fazendo o merge do Texto no modelo com o qrcode
             
             # Salva o arquivo!
-            txt.save(r'src\texto.png')
-            imgt = Image.open(r'src\texto.png')
+            txt.save(r'_internal/src/texto.png')
+            imgt = Image.open(r'_internal/src/texto.png')
             x = int((modelo.size[0]-imgt.size[0])/2)
             merge.paste(imgt, (x, 200))
             merge.save(qrLocal)
@@ -127,7 +127,7 @@ class Gerador:
         on('https://github.com/foxtec198/Desktop_GQR/issues/new')
         
     def youtube(self):
-        on('https://youtu.be/W6hMMplTn0Q') 
+        on('https:  //youtu.be/W6hMMplTn0Q') 
 class Login(Screen):
     ... 
 class MainWin(Screen):
@@ -135,12 +135,12 @@ class MainWin(Screen):
 class Main(MDApp):
     def build(self):
         super().__init__()
-        Builder.load_file('src/style.kv')
+        Builder.load_file('_internal/src/style.kv')
         self.th = self.theme_cls
         self.th.theme_style = 'Dark'
         self.th.primary_palette = 'Gray'
         self.title = 'GeradorQR'
-        self.icon = 'src/icon.ico'
+        self.icon = '_internal/src/icon.ico'
         sm = MDScreenManager()
         sm.add_widget(Login())
         sm.add_widget(MainWin())
