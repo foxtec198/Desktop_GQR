@@ -7,7 +7,7 @@
   },
   {
    "optionDest": "filenames",
-   "value": "C:/Users/Guibs/Documents/GitHub/GeradorDeQrCode/main.py"
+   "value": "C:/Users/foxte/OneDrive/Documentos/GitHub/Desktop_GQR/main.py"
   },
   {
    "optionDest": "onefile",
@@ -19,7 +19,7 @@
   },
   {
    "optionDest": "icon_file",
-   "value": "C:/Users/Guibs/Documents/GitHub/GeradorDeQrCode/src/icon.ico"
+   "value": "C:/Users/foxte/OneDrive/Documentos/GitHub/Desktop_GQR/src/icon.ico"
   },
   {
    "optionDest": "name",
@@ -46,10 +46,6 @@
    "value": false
   },
   {
-   "optionDest": "embed_manifest",
-   "value": false
-  },
-  {
    "optionDest": "uac_admin",
    "value": false
   },
@@ -66,20 +62,8 @@
    "value": false
   },
   {
-   "optionDest": "win_private_assemblies",
-   "value": false
-  },
-  {
-   "optionDest": "win_no_prefer_redirects",
-   "value": false
-  },
-  {
-   "optionDest": "ascii",
-   "value": false
-  },
-  {
    "optionDest": "datas",
-   "value": "C:/Users/Guibs/Documents/GitHub/GeradorDeQrCode/src;src/"
+   "value": "C:/Users/foxte/OneDrive/Documentos/GitHub/Desktop_GQR/src;src/"
   }
  ],
  "nonPyinstallerOptions": {
