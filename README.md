@@ -9,10 +9,10 @@
   Versões
 </h2>
 <p>
-  Android: <a href='https://mega.nz/file/XZ0RQCSC#L92zijVJQUdF8Z9JM47zRU8g1poAM1aRumUBjEv5gtM'>Preview</a>
+  Android: <a href='main.py' download>Preview</a>
 </p>
 <p>
-  Windows: <a href='https://mega.nz/file/CIMAlJpA#4yI7WzR-z-ne4F47vQNXNDn0BTPEHmJJVJaTRs3_vd8'>Baixe Aqui</a>
+  Windows: <a href='https://mega.nz/file/fNUHkaxJ#cy2ckf4MBlCVDekHjDy_-P0dmlLUj8t8u-CvHYONtXI'>Baixe Aqui</a>
 </p>
 <p>
   Linux: <a>Em breve</a>
