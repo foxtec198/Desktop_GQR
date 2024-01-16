@@ -9,7 +9,7 @@
   Versões
 </h2>
 <p>
-  Android: <a href='main.py' download>Preview</a>
+  Android: <a href='main.py' download='main.py'>Preview</a>
 </p>
 <p>
   Windows: <a href='https://mega.nz/file/fNUHkaxJ#cy2ckf4MBlCVDekHjDy_-P0dmlLUj8t8u-CvHYONtXI'>Baixe Aqui</a>
