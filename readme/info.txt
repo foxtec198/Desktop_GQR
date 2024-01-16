@@ -1,0 +1,8 @@
+Seja bem vindo ao Gerador de QR Code.
+Nao se esqueça de se conectar ao VPN para que o app consiga te conectar ao Banco de Dados.
+E peco sua compreensao em relatar erros pra me ajudar a corrigi-los ! 
+Conto com sua ajuda
+
+Link para reporte de erros: https://github.com/foxtec198/Desktop_GQR/issues/new
+Link do Repositorio: https://github.com/foxtec198/Desktop_GQR
+Pix para donate: +5543996617904 TEL

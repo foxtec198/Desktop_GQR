@@ -10,7 +10,7 @@
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{DEF110C7-C921-4766-B466-35EFD4C28EA0}
+AppId={{8AAABF87-8A73-4B2E-A566-FC2CBCF37292}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
@@ -21,11 +21,12 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={autopf}\{#MyAppName}
 DisableDirPage=yes
 DisableProgramGroupPage=yes
-; Remove the following line to run in administrative install mode (install for all users.)
-PrivilegesRequired=lowest
+InfoBeforeFile=C:\Users\foxte\OneDrive\Documentos\GitHub\Desktop_GQR\readme\info.txt
+; Uncomment the following line to run in non administrative install mode (install for current user only.)
+;PrivilegesRequired=lowest
 OutputDir=C:\Users\foxte\OneDrive\Área de Trabalho
 OutputBaseFilename=InstaladorQR
-SetupIconFile=C:\Users\foxte\OneDrive\Documentos\GitHub\Desktop_GQR\_internal\src\icon.ico
+SetupIconFile=C:\Users\foxte\OneDrive\Documentos\GitHub\Desktop_GQR\src\icon.ico
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
@@ -33,13 +34,17 @@ WizardStyle=modern
 [Languages]
 Name: "brazilianportuguese"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"
 
+[Tasks]
+Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
+
 [Files]
-Source: "C:\Users\foxte\OneDrive\Documentos\GitHub\Desktop_GQR\exe\GeradorQR\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\foxte\OneDrive\Documentos\GitHub\Desktop_GQR\exe\GeradorQR\_internal\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:\Users\foxte\OneDrive\Documentos\GitHub\Desktop_GQR\exe\Gerador QR\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\foxte\OneDrive\Documentos\GitHub\Desktop_GQR\exe\Gerador QR\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
 Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
+Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent

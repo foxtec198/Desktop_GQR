@@ -7,7 +7,7 @@
         MDFloatLayout:
             size_hint_min_x: 300
             FitImage:
-                source: '_internal/src/logoLogin.png'
+                source: 'src/logoLogin.png'
                 size_hint: None, None
                 size: 290, 300
                 padding: 10
@@ -95,7 +95,7 @@
                 size_hint_min_x: 300
                 MDFloatLayout:
                     FitImage:
-                        source: '_internal/src/qr.png'
+                        source: 'src/qr.png'
                         size_hint: None, None
                         size: 100, 100
                         padding: 10
@@ -147,7 +147,7 @@
                     FloatLayout:
                         FitImage:
                             id: modelo
-                            source: '_internal/src/modeloTrad.png'
+                            source: 'src/modeloTrad.png'
                             size_hint: None, None
                             size: 130, 200
                             pos_hint: {'center_x': .5,'center_y': .5}
@@ -161,37 +161,37 @@
                             pos_hint: {'center_x': .2,'center_y': .6}
                             on_release:
                                 app.modelo('modeloTrad')
-                                modelo.source = '_internal/src/modeloTrad.png'
+                                modelo.source = 'src/modeloTrad.png'
                         MDTextButton:
                             text: 'PoliService'
                             pos_hint: {'center_x': .2,'center_y': .45}
                             on_release:
                                 app.modelo('modeloPoli')
-                                modelo.source = '_internal/src/modeloPoli.png'
+                                modelo.source = 'src/modeloPoli.png'
                         MDTextButton:
                             text: 'Force'
                             pos_hint: {'center_x': .2,'center_y': .3}
                             on_release:
                                 app.modelo('modeloForce')
-                                modelo.source = '_internal/src/modeloForce.png'
+                                modelo.source = 'src/modeloForce.png'
 
                         MDTextButton:
                             text: 'OnSeg'
                             pos_hint: {'center_x': .75,'center_y': .6}
                             on_release:
                                 app.modelo('modeloOnseg')
-                                modelo.source = '_internal/src/modeloOnSeg.png'
+                                modelo.source = 'src/modeloOnSeg.png'
                         MDTextButton:
                             text: 'Top Service'
                             pos_hint: {'center_x': .75,'center_y': .45}
                             on_release:
                                 app.modelo('modeloTop')
-                                modelo.source = '_internal/src/modeloTop.png'
+                                modelo.source = 'src/modeloTop.png'
                         MDTextButton:
                             text: 'Minimalista'
                             pos_hint: {'center_x': .75,'center_y': .3}
                             on_release:
                                 app.modelo('modeloMini')
-                                modelo.source = '_internal/src/modeloMini.png'
+                                modelo.source = 'src/modeloMini.png'
 
                         
