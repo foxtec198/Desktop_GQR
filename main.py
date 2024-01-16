@@ -30,8 +30,10 @@ class Gerador:
         self.lgConn.commit()
 
     def ins(self, uid, pwd, server):
-        idEx = self.dd[3]
-        self.c.execute(f'DELETE FROM USERS WHERE Id <> {idEx}')
+        self.cons()
+        if self.dd != None: 
+            idEx = self.dd[3]
+            self.c.execute(f'DELETE FROM USERS WHERE Id <> {idEx}')
         self.c.execute(f'INSERT INTO USERS(user, pwd, servidor) VALUES ("{uid}","{pwd}","{server}")')
         self.lgConn.commit()
     
@@ -162,17 +164,16 @@ class Main(MDApp):
             
     def login(self):
         if self.idsLogin.server.text != '' and self.idsLogin.user.text != '' and self.idsLogin.pwd.text != '':
-            try:
-                if self.idsLogin.slvUser.active: g.ins(uid=self.idsLogin.user.text ,pwd=self.idsLogin.pwd.text , server=self.idsLogin.server.text)
-                else: g.excluir()
-                g.loginDB(
-                    server = self.idsLogin.server.text,
-                    uid= self.idsLogin.user.text,
-                    pwd= self.idsLogin.pwd.text
-                    )
-                toast('Logado com Sucesso')
-                self.root.current = 'mainwin'
-            except: toast('Login Invalido')
+            if self.idsLogin.slvUser.active: g.ins(uid=self.idsLogin.user.text ,pwd=self.idsLogin.pwd.text , server=self.idsLogin.server.text)
+            else: g.excluir()
+            g.loginDB(
+                server = self.idsLogin.server.text,
+                uid= self.idsLogin.user.text,
+                pwd= self.idsLogin.pwd.text
+                )
+            toast('Logado com Sucesso')
+            self.root.current = 'mainwin'
+
         else: toast('Campos Vazios')
         
     def modelo(self, modelo):
