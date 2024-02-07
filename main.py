@@ -48,9 +48,8 @@ class Gerador:
     def logicaDeGeração(self):
         cont = 0
         for c in self.estrutura:
-            qrc = c[1] # definindo o qr code
             self.nomeLocal = c[0] # o nome do sublocal
-            self.nomeLocal = self.nomeLocal.replace('/','') # removendo barras para n ocasionar erro
+            qrc = c[1] # definindo o qr code
             qrcode = make_qr(qrc) # gerando o qrcode.png
             qrLocal = f'{self.nomeDir}\{self.nomeLocal}.png' # definido a estrutura do diretorio
             qrcode.save(qrLocal, scale=10) #salvando o qrcode no diretorio

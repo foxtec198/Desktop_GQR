@@ -1,6 +1,8 @@
-select * from Tarefa t
-inner join dw_vista.dbo.DM_Estrutura es on es.Id_Estrutura = t.EstruturaId
-where month(terminoreal) = 01 
-and  year(terminoreal) = 2024
-and Nome = 'Visita Oper. Liderança'
-and es.crno = 49454
+SELECT 
+E.Descricao as Nome, 
+E.QRCode, 
+E.Grupo 
+FROM Estrutura E 
+INNER JOIN DW_Vista.dbo.DM_Estrutura as Es on Es.Id_Estrutura = Id 
+WHERE Es.CRNo = 17739 
+AND E.Nivel >= 5
