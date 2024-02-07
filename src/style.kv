@@ -19,7 +19,7 @@
                 halign: 'center'
                 pos_hint: {'center_x': 0.5,'center_y': 0.9}
             MDTextField:
-                id: server
+                id: serverLogin
                 icon_left: 'server-security'
                 hint_text: 'Server'
                 helper_text: 'Ex: 10.10.1.10'
@@ -27,7 +27,7 @@
                 pos_hint: {'center_x': 0.5,'center_y': 0.75}
                 size_hint: .8, None
             MDTextField:
-                id: user
+                id: uidLogin
                 icon_left: 'badge-account'
                 hint_text: 'Usuário'
                 helper_text: 'Gerador.QR'
@@ -35,7 +35,7 @@
                 pos_hint: {'center_x': 0.5,'center_y': 0.6}
                 size_hint: .8, None
             MDTextField:
-                id: pwd
+                id: pwdLogin
                 icon_left: 'key-chain'
                 hint_text: 'Senha'
                 password:True
@@ -47,7 +47,7 @@
                 pos_hint: {'center_x': 0.85,'center_y': 0.45}
                 on_release:
                     self.icon = 'eye-off' if self.icon == 'eye' else 'eye'
-                    pwd.password = False if pwd.password == True else True
+                    pwdLogin.password = False if pwdLogin.password == True else True
             MDSwitch:
                 id: slvUser
                 pos_hint: {'center_x': .2,'center_y': 0.35}
@@ -62,7 +62,7 @@
                 pos_hint: {'center_x': 0.5,'center_y': 0.25}
                 size_hint: .8, None
                 on_release:
-                    app.login()
+                    app.login(serverLogin.text, uidLogin.text, pwdLogin.text)
             MDRoundFlatIconButton:
                 text: "Como Usar"
                 icon: "youtube"
@@ -122,7 +122,7 @@
                         pos_hint: {'center_x': 0.5,'center_y': 0.3}
                         size_hint: .6, None
                         on_release:
-                            app.gerar()
+                            app.gerar(numCR.text, numNivel.text)
 
                     MDRoundFlatIconButton:
                         text: "Abrir Pasta"
