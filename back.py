@@ -27,8 +27,12 @@ class Logica:
         except: return "Erro com a consulta!"
 
     @cache
-    def get_id_estrutura(self):
-        ...
+    def get_link_estrutura(self, numCR):
+        try:
+            Id = cons(f"SELECT TOP 1 Id FROM ESTRUTURA WHERE HierarquiaDescricao LIKE '%{numCR} - %' AND Nivel = 3")[0][0]
+            link = f'https://inteligenciaoperacional.app.br/report/gpsvista.php?qrcode={Id}'
+            return link
+        except: return 'Link não encontrado'
 
     @cache
     def set_dataframe(self, cr, nivel=3):
@@ -102,7 +106,10 @@ class BackEnd:
 
 class QRCode:
     def __init__(self) -> None:
-        try: mkdir('src/temp')
+        self.lgc = Logica()
+        try: 
+            mkdir('src/temp')
+            mkdir('./QRCodes')
         except: ...
 
     def resizeImg(self, img, valor: tuple):
@@ -118,16 +125,18 @@ class QRCode:
                 nivel = int(nivel)
                 nivel += 3
 
-            estrutra = l.set_dataframe(cr, nivel)
-            cr =   l.get_cr(cr)
+            estrutra = self.lgc.set_dataframe(cr, nivel)
+            cr = self.lgc.get_cr(cr)
+            link = self.lgc.get_link_estrutura(cr)
             qrs = estrutra['QR']
             locais = estrutra['Local']
             row = 0
             for local in locais:
-                self.makePng(cr, local, qrs[row], 'teste')
+                self.makePng(cr, local, qrs[row], link, cont=row)
                 row += 1
+            self.merge(cr)
     
-    def makePng(self, cr, local, qr, link):
+    def makePng(self, cr, local, qr, link, cont):
             # Gera os QR Codes
             qrlocal = make(qr)
             qrlast = make(link)
@@ -154,6 +163,7 @@ class QRCode:
             fnt = ImageFont.truetype('arial', 30)
             textImg.text((450, 210), local, font=fnt, fill='black', align='center')
 
+            # Cola as propriedas na imagem final
             newImage = Image.new('RGBA', coresImg.size)
             newImage.paste(coresImg)
             newImage.paste(logoImg, (420, 5))
@@ -161,11 +171,24 @@ class QRCode:
             newImage.paste(qrImg2, (755, 410))
             newImage.save('src/temp/temp.png')
 
+            imgQr = Image.open('src/temp/temp.png')
+            nomePdf = f'src/temp/{cont}.pdf'
+            arquivo = canvas.Canvas(nomePdf, pagesize=imgQr.size, )
+            arquivo.drawImage('src/temp/temp.png', 0, 0)
+            arquivo.save()
+
+    def merge(self, cr):
+        dir = listdir('src/temp/')
+        PDF = PdfMerger()
+        for i in dir:
+            if '.pdf' in i:
+                with open(f'src/temp/{i}', 'rb') as pdf:
+                    leitura = PdfReader(pdf)
+                    PDF.append(leitura)
+        PDF.write(f'QRCodes/{cr}.pdf')
+        PDF.close()
 
 if __name__ == '__main__':
     b = BackEnd()
-    q = QRCode()
-    l = Logica()
-    # b.login_sql('10.56.6.56','guilherme.breve','8458Guilherme')
-    # q.gerar_qr(17739, 2)
-    q.makePng('TESTE', 'teste2','najnadwnwanalwnkladwnldnaw','ajdw jkdwaj dkja djaj djadjwna')
+    b.login_sql('10.56.6.56', 'guilherme.breve', '8458Guilherme')
+    QRCode().gerar_qr(17739, 2)
