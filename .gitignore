@@ -11,7 +11,7 @@ db.db
 .Python
 .db
 exe/
-src/
+src/temp/
 build/
 develop-eggs/
 dist/
