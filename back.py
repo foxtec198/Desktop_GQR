@@ -22,6 +22,16 @@ class Logica:
         except: return 'CR não corresponde'
 
     @cache
+    def definir_cor(self, cr):
+        # Azul claro limpeza, laranja logistica, vermelho manutenção, azul escuro segurança e verde jardinagem
+        if '- POR -' in cr: return 'src/cores/modeloCinza.png'
+        elif '- MAV -' in cr: return 'src/cores/modeloVerde.png'
+        elif '- MAP -' in cr: return 'src/cores/modeloVermelho.png'
+        elif '- LPG -' in cr: return 'src/cores/modeloAzul.png'
+        elif '- SEG -' in cr: return 'src/cores/modeloAzulEscuro.png'
+        else: return 'src/cores/modeloAzulEscuro.png'
+
+    @cache
     def get_local(self, numCR, nivel=3):
         try: return cons(f"SELECT Es.QRCode, Es.Descricao as 'Local', (SELECT Descricao FROM Estrutura Es2 WHERE Es2.Id = Es.EstruturaSuperiorId) as 'Superior' FROM Estrutura Es WHERE HierarquiaDescricao LIKE '%{numCR} -%' AND Nivel >= {nivel}")
         except: return "Erro com a consulta!"
@@ -124,19 +134,19 @@ class QRCode:
             else: 
                 nivel = int(nivel)
                 nivel += 3
-
+            linkFinal = self.lgc.get_link_estrutura(cr)
             estrutra = self.lgc.set_dataframe(cr, nivel)
             cr = self.lgc.get_cr(cr)
-            link = self.lgc.get_link_estrutura(cr)
             qrs = estrutra['QR']
             locais = estrutra['Local']
             row = 0
             for local in locais:
-                self.makePng(cr, local, qrs[row], link, cont=row)
+                self.makePng(cr, local, qrs[row], linkFinal, row,)
                 row += 1
             self.merge(cr)
+            rmtree('src/temp')
     
-    def makePng(self, cr, local, qr, link, cont):
+    def makePng(self, crNome, local, qr, link, cont):
             # Gera os QR Codes
             qrlocal = make(qr)
             qrlast = make(link)
@@ -147,21 +157,23 @@ class QRCode:
             self.resizeImg('src/temp/qrtemp.png', (260, 260))
             self.resizeImg('src/temp/qrtemp2.png', (150, 150))
 
-            coresImg = Image.open('src/cores/modeloAzul.png')
-            logoImg = Image.open('src/logos/topservice.png')
+            coresImg = Image.open(self.lgc.definir_cor(crNome))
+            logoImg = Image.open('src/logos/ggps.png')
             qrImg = Image.open('src/temp/qrtemp.png')
             qrImg2 = Image.open('src/temp/qrtemp2.png')
 
 
             # TEXTO - Nome CR
             textImg = ImageDraw.Draw(coresImg)
-            fnt = ImageFont.truetype('src/fonts/arial_narrow_7.ttf', 40)
-            textImg.text((450, 150), cr, font=fnt, fill='black', align='center')
+            fnt = ImageFont.truetype('src/fonts/arial_narrow_7.ttf', 30)
+            txt = f'{crNome[:40]}\n{crNome[40:]}'
+            textImg.text((450, 150), txt, font=fnt, fill='black', align='center')
 
             # TEXTO - Nome Local
             textImg = ImageDraw.Draw(coresImg)
-            fnt = ImageFont.truetype('arial', 30)
-            textImg.text((450, 210), local, font=fnt, fill='black', align='center')
+            fnt = ImageFont.truetype('arial', 20)
+            txt = f'{local[:40]}\n{local[40:]}'
+            textImg.text((450, 210), txt, font=fnt, fill='black', align='center')
 
             # Cola as propriedas na imagem final
             newImage = Image.new('RGBA', coresImg.size)
@@ -191,4 +203,4 @@ class QRCode:
 if __name__ == '__main__':
     b = BackEnd()
     b.login_sql('10.56.6.56', 'guilherme.breve', '8458Guilherme')
-    QRCode().gerar_qr(17739, 2)
+    QRCode().gerar_qr(17739, 1)
