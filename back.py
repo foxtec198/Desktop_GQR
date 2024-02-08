@@ -27,6 +27,10 @@ class Logica:
         except: return "Erro com a consulta!"
 
     @cache
+    def get_id_estrutura(self):
+        ...
+
+    @cache
     def set_dataframe(self, cr, nivel=3):
         self.qrs = list() # Cria lista de QRs
         self.local_completo = list() #Cria Lista de Locais Completos
@@ -34,9 +38,8 @@ class Logica:
 
         cns = self.get_local(cr, nivel) # Consulta os Locais
         for row in cns: # Filtra os dados e manda para as respectivas listas
-            print(row)
-            # self.qrs.append(row[0])
-            # self.local_completo.append(f'{row[2]} > {row[1]}')
+            self.qrs.append(row[0])
+            self.local_completo.append(f'{row[2]} > {row[1]}')
             
         estrutra['QR'] = self.qrs
         estrutra['Local'] = self.local_completo
@@ -135,33 +138,34 @@ class QRCode:
             self.resizeImg('src/temp/qrtemp.png', (260, 260))
             self.resizeImg('src/temp/qrtemp2.png', (150, 150))
 
-            coresImg = Image.open('src/cores/modeloVerde.png')
-            logoImg = Image.open('src/logos/ggps.png')
+            coresImg = Image.open('src/cores/modeloAzul.png')
+            logoImg = Image.open('src/logos/topservice.png')
             qrImg = Image.open('src/temp/qrtemp.png')
             qrImg2 = Image.open('src/temp/qrtemp2.png')
 
 
             # TEXTO - Nome CR
             textImg = ImageDraw.Draw(coresImg)
-            fnt = ImageFont.truetype('src/arial_narrow_7.ttf', 30)
-            textImg.text((500, 150), cr, font=fnt, fill='black', align='center')
+            fnt = ImageFont.truetype('src/fonts/arial_narrow_7.ttf', 40)
+            textImg.text((450, 150), cr, font=fnt, fill='black', align='center')
 
             # TEXTO - Nome Local
             textImg = ImageDraw.Draw(coresImg)
-            fnt = ImageFont.truetype('arial', 25)
-            textImg.text((500, 200), local, font=fnt, fill='black', align='center')
+            fnt = ImageFont.truetype('arial', 30)
+            textImg.text((450, 210), local, font=fnt, fill='black', align='center')
 
             newImage = Image.new('RGBA', coresImg.size)
             newImage.paste(coresImg)
             newImage.paste(logoImg, (420, 5))
             newImage.paste(qrImg, (75, 100))
             newImage.paste(qrImg2, (755, 410))
-            newImage.save('temp.png')
+            newImage.save('src/temp/temp.png')
 
 
 if __name__ == '__main__':
     b = BackEnd()
     q = QRCode()
     l = Logica()
-    print(b.login_sql('10.56.6.56','guilherme.breve','8458Guilherme'))
+    # b.login_sql('10.56.6.56','guilherme.breve','8458Guilherme')
     # q.gerar_qr(17739, 2)
+    q.makePng('TESTE', 'teste2','najnadwnwanalwnkladwnldnaw','ajdw jkdwaj dkja djaj djadjwna')
