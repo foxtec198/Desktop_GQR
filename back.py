@@ -162,7 +162,6 @@ class QRCode:
             qrImg = Image.open('src/temp/qrtemp.png')
             qrImg2 = Image.open('src/temp/qrtemp2.png')
 
-
             # TEXTO - Nome CR
             textImg = ImageDraw.Draw(coresImg)
             fnt = ImageFont.truetype('src/fonts/arial_narrow_7.ttf', 30)
@@ -203,4 +202,5 @@ class QRCode:
 if __name__ == '__main__':
     b = BackEnd()
     b.login_sql('10.56.6.56', 'guilherme.breve', '8458Guilherme')
-    QRCode().gerar_qr(17739, 1)
+    while True:
+        QRCode().gerar_qr(input('CR: '), input('Nivel:'))

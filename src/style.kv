@@ -147,7 +147,7 @@
                     FloatLayout:
                         FitImage:
                             id: modelo
-                            source: 'src/modeloTrad.png'
+                            source: 'src/logos/ggps.png'
                             size_hint: None, None
                             size: 130, 200
                             pos_hint: {'center_x': .5,'center_y': .5}
@@ -160,7 +160,7 @@
                             text: 'Grupo GPS'
                             pos_hint: {'center_x': .2,'center_y': .6}
                             on_release:
-                                app.modelo('modeloTrad')
+                                app.modelo('cores/modelo')
                                 modelo.source = 'src/modeloTrad.png'
                         MDTextButton:
                             text: 'PoliService'
