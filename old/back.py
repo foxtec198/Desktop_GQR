@@ -1,7 +1,9 @@
-import pyodbc as sql
+from sqlalchemy import create_engine
+from urllib.parse import quote_plus
+from pandas import read_sql_query as rsq
 from segno import make
 from functools import cache
-from os import mkdir, listdir, system, remove
+from os import mkdir, listdir, system
 from time import strftime as st
 from shutil import rmtree
 from PIL import Image, ImageDraw, ImageFont
@@ -10,38 +12,44 @@ from webbrowser import open_new_tab as on
 from reportlab.pdfgen import canvas
 from sqlite3 import connect
 
-def cons(consulta):
-    return c.execute(consulta).fetchall()
-
-class Logica:
+class BackEnd:
     @cache
     def get_cr(self, numCR):
         try:
-            cr = cons(f"SELECT TOP 1 Descricao FROM ESTRUTURA WHERE HierarquiaDescricao LIKE '%{numCR} - %' AND Nivel = 3")[0][0]
-            return cr
+            cr = rsq(f"SELECT TOP 1 Descricao FROM ESTRUTURA WHERE HierarquiaDescricao LIKE '%{numCR}%'", self.conn)
+            for i in cr['Descricao']:
+                print(i)
+                return i
         except: return 'CR não corresponde'
 
     @cache
     def definir_cor(self, cr):
         # Azul claro limpeza, laranja logistica, vermelho manutenção, azul escuro segurança e verde jardinagem
-        if '- POR -' in cr: return 'src/cores/modeloCinza.png'
-        elif '- MAV -' in cr: return 'src/cores/modeloVerde.png'
-        elif '- MAP -' in cr: return 'src/cores/modeloVermelho.png'
-        elif '- LPG -' in cr: return 'src/cores/modeloAzul.png'
-        elif '- SEG -' in cr: return 'src/cores/modeloAzulEscuro.png'
+        if 'POR -' in cr: return 'src/cores/modeloCinza.png'
+        elif 'MAV -' in cr: return 'src/cores/modeloVerde.png'
+        elif 'MAP -' in cr: return 'src/cores/modeloVermelho.png'
+        elif 'LPG -' in cr: return 'src/cores/modeloAzul.png'
+        elif 'SEG -' in cr: return 'src/cores/modeloAzulEscuro.png'
         else: return 'src/cores/modeloAzulEscuro.png'
 
     @cache
-    def get_local(self, numCR, nivel=3):
-        try: return cons(f"SELECT Es.QRCode, Es.Descricao as 'Local', (SELECT Descricao FROM Estrutura Es2 WHERE Es2.Id = Es.EstruturaSuperiorId) as 'Superior' FROM Estrutura Es WHERE HierarquiaDescricao LIKE '%{numCR} -%' AND Nivel >= {nivel}")
+    def get_local(self, numCR, sinal, nivel):
+        try: 
+            return rsq(f"""
+                SELECT Es.QRCode, 
+                Es.Descricao as 'Local',
+                (SELECT Descricao FROM Estrutura Es2 WHERE Es2.Id = Es.EstruturaSuperiorId) as 'Superior' 
+                FROM Estrutura Es 
+                WHERE HierarquiaDescricao LIKE '%{numCR}%' 
+                AND Nivel {sinal} {nivel}""", self.conn)
         except: return "Erro com a consulta!"
 
     @cache
     def get_link_estrutura(self, numCR):
         try:
-            Id = cons(f"SELECT TOP 1 Id FROM ESTRUTURA WHERE HierarquiaDescricao LIKE '%{numCR} - %' AND Nivel = 3")[0][0]
-            link = f'https://inteligenciaoperacional.app.br/report/gpsvista.php?qrcode={Id}'
-            return link
+            Id = rsq(f"SELECT TOP 1 Id FROM ESTRUTURA WHERE HierarquiaDescricao LIKE '%{numCR}%' AND Nivel = 3", self.conn)
+            for id in Id['Id']:
+                return f'https://inteligenciaoperacional.app.br/report/gpsvista.php?qrcode={id}'
         except: return 'Link não encontrado'
 
     @cache
@@ -59,19 +67,21 @@ class Logica:
         estrutra['Local'] = self.local_completo
         return estrutra
 
-class BackEnd:
     def __init__(self):
         self.database_local()
 
     @cache
-    def login_sql(self, server, uid, pwd):
-        global c, engine
+    def login_sql(self, server, uid, pwd, db = 'Vista_Replication_PRD'):
         if server != '':
+            server = quote_plus(server)
             if uid != '':
+                uid = quote_plus(uid)
                 if pwd != '':
+                    pwd = quote_plus(pwd)
                     try:
-                        engine = sql.connect(f'DRIVER=SQL Server;UID={uid};PWD={pwd};SERVER={server};DATABASE=Vista_Replication_PRD')
-                        c = engine.cursor()
+                        db = quote_plus(db)
+                        self.engine = create_engine(f"mssql+pyodbc://{uid}:{pwd}@{server}/{db}?driver=ODBC+Driver+17+for+SQL+Server")
+                        self.conn = self.engine.connect()
                         return 'Logado com Sucesso'
                     except: return 'Conexão Invalida!'
                 else: return 'Senha Vazia'
@@ -116,7 +126,7 @@ class BackEnd:
 
 class QRCode:
     def __init__(self) -> None:
-        self.lgc = Logica()
+        self.lgc = BackEnd()
         try: 
             mkdir('src/temp')
             mkdir('./QRCodes')
@@ -127,13 +137,8 @@ class QRCode:
         imgR.thumbnail(valor)
         imgR.save(img)
 
-    def gerar_qr(self, cr, nivel=3):
+    def gerar_qr(self, cr, nivel):
         if cr != '':
-            if nivel == '' or nivel == None:
-                nivel = 3
-            else: 
-                nivel = int(nivel)
-                nivel += 3
             linkFinal = self.lgc.get_link_estrutura(cr)
             estrutra = self.lgc.set_dataframe(cr, nivel)
             cr = self.lgc.get_cr(cr)
@@ -201,6 +206,6 @@ class QRCode:
 
 if __name__ == '__main__':
     b = BackEnd()
-    b.login_sql('10.56.6.56', 'guilherme.breve', '8458Guilherme')
+    b.login_sql('10.56.6.56', 'guilherme.breve', '84584608@Gui')
     while True:
         QRCode().gerar_qr(input('CR: '), input('Nivel:'))

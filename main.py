@@ -1,65 +1,63 @@
-# imports Front
-from kivymd.app import MDApp
-from kivymd.uix.screenmanager import MDScreenManager
-from kivymd.uix.screen import Screen
-from kivy.lang import Builder
-from kivymd.toast import toast
-from back import *
+from PyQt5.QtWidgets import QApplication, QMessageBox
+from PyQt5.uic import loadUi
+from qdarktheme import setup_theme
+from backEnd import BackEnd
+from qrcode import QRCode
 
-class Login(Screen): ... 
-class MainWin(Screen): ...
-
-class Main(MDApp):
-    def build(self):
-        super().__init__()
-        Builder.load_file('src/style.kv')
-        self.th = self.theme_cls
-        self.th.theme_style = 'Dark'
-        self.th.primary_palette = 'Gray'
-        self.title = 'GeradorQR'
-        self.icon = 'src/icon.ico'
-        sm = MDScreenManager()
-        sm.add_widget(Login())
-        sm.add_widget(MainWin())
-        return sm
-
-    def on_start(self):
-        self.root.current = 'login'
-        self.idsMain = self.root.get_screen('mainwin').ids
-        self.idsLogin = self.root.get_screen('login').ids
-        self.modelo('modeloTrad')
-        b.cons()
-        try:
-            if b.dd != None:
-                self.idsLogin.slvUser.active = True
-                self.idsLogin.serverLogin.text = b.dd[0]
-                self.idsLogin.uidLogin.text = b.dd[1]
-                self.idsLogin.pwdLogin.text = b.dd[2]
-        except: ...
-            
-    def login(self, *args):
-        lg = b.login_sql(args[0], args[1], args[2])
-        if lg == 'Logado com Sucesso': 
-            self.root.current = 'mainwin'
-            if self.idsLogin.slvUser.active: b.ins(args[0], args[1], args[2])
-            toast(lg)
-        else: toast(lg)
+class GQR:
+    def __init__(self, App: QApplication):
+        self.back = BackEnd()
+        setup_theme('dark')
+        self.loginWin = loadUi('src/ui/login.ui')
+        self.mainWin = loadUi('src/ui/main.ui')
         
-    def modelo(self, modelo):
-        self.md = modelo
+        self.loginWin.show()
+
+        self.mainWin.btn_gerar.clicked.connect(
+            lambda: self.gerar(
+                self.mainWin.entry_cr.text(),
+                self.mainWin.igualORlike.currentText(),
+                self.mainWin.op_nivel.currentText(),
+                self.mainWin.op_nivel2.currentText(),
+                self.mainWin.op_empresas.currentText(),
+                self.mainWin.op_tipos.currentText()
+            )
+        )
+
+        self.loginWin.btn_login.clicked.connect(
+            lambda: self.realizar_login(
+                self.loginWin.entry_server.text(),
+                self.loginWin.entry_uid.text(),
+                self.loginWin.entry_senha.text(),
+                )
+            )
         
-    def gerar(self, cr, nv):
-        qr = QRCode().gerar_qr(self.md, cr, nv)
-        if qr not in 'QRCodes gerados com sucesso': toast(qr)
+        App.exec()
 
-    def abrirPasta(self):
-        b.abrir_pasta_de_geração()
-    
-    def github(self):
-        b.abrir_gitHub()
-    
-    def yt(self):
-        b.abrir_youtube()
+    def msg(self, win, message, tipo = 0, titulo = 'Gerador QR'):
+        match tipo:
+            case 0: QMessageBox.information(win, titulo, message)
+            case 1: QMessageBox.about(win, titulo, message)
+            case 2: QMessageBox.warning(win, titulo, message)
 
-b = BackEnd()
-Main().run()
+    def realizar_login(self, server, uid, pwd):
+        self.msg(self.loginWin, 'Logando...')
+        login = self.back.connect_db(uid, pwd, server)
+        self.qr = QRCode(uid, pwd, server)
+        if login == 'Conectado':
+            self.mainWin.show()
+            self.loginWin.close()
+            self.msg(self.mainWin, f'{login}, Seja bem-vindo', 1)
+        else: self.msg(self.mainWin, 'Login Incorreto', 2)
+
+    def gerar(self, cr, op_cr, nivel, op_nivel, op_empresas, tipos):
+        if cr and op_cr and nivel and op_nivel and op_empresas:
+            if op_nivel == '0 - CR': nv = 3
+            else: nv = int(op_nivel) + 3
+            self.msg(self.mainWin, 'Gerando...')
+            self.qr.gerar(cr, op_cr, nivel, nv, op_empresas, tipos)
+            self.msg(self.mainWin, f'QRCodes Gerados! - {self.qr.nomeCR}', 1)
+        else: self.msg(self.mainWin, 'Dados Invalidos, Confira')
+
+if __name__ == '__main__':
+    GQR(QApplication([]))
