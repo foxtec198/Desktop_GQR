@@ -1,63 +1,139 @@
 from PyQt5.QtWidgets import QApplication, QMessageBox
+from PyQt5.QtGui import QIcon
 from PyQt5.uic import loadUi
 from qdarktheme import setup_theme
-from backEnd import BackEnd
+from sys import argv, exit
 from qrcode import QRCode
+from sqlite3 import connect
+from os import system
+from functools import cache
+from datetime import datetime as dt
+
+qr = QRCode()
+app = QApplication(argv)
 
 class GQR:
-    def __init__(self, App: QApplication):
-        self.back = BackEnd()
+    def __init__(self):
+        self.conn = connect('src/db/temp.db', check_same_thread=False)
+        self.c = self.conn.cursor()
+        self.c.execute("""CREATE TABLE IF NOT EXISTS "user" (
+        "server" TEXT,
+        "user"	 TEXT,
+        "pwd"	 TEXT)
+        """)
         setup_theme('dark')
-        self.loginWin = loadUi('src/ui/login.ui')
-        self.mainWin = loadUi('src/ui/main.ui')
+        self.win = loadUi('src/ui/main.ui')
+        self.callbacks()
+        self.confirmar_dados()
+        self.win.pages.setCurrentWidget(self.win.login)
+        self.win.nivel.setCurrentText('3 - CR')
+        self.pg = self.win.pg
+        self.win.fmPg.hide()
+
+        self.win.show()
+        exit(app.exec_())
+    
+    def msg(self, msg):
+        QMessageBox.about(self.win, 'Gerador QR', msg)
+
+    def callbacks(self):
+        # self.win.btnLogin.clicked.connect(lambda: Thread(target=self.connect).start())
+        self.win.btnLogin.clicked.connect(self.connect)
+        self.win.btnGerar.clicked.connect(self.gerar)
+        self.win.btnPasta.clicked.connect(self.abrir_pasta)
+
+    def add_value(self, x):
+        self.pg.setValue(x)
+
+    # Functions
+    def confirmar_dados(self):
+        user = self.win.user.text()
+        pwd = self.win.pwd.text()
+        server = self.win.server.text()
+        slv = self.win.salvar.isChecked()
+
+        self.c.execute('SELECT * FROM user')
+        dbu = self.c.fetchone()
         
-        self.loginWin.show()
+        if dbu:
+            self.win.user.setText(dbu[1])
+            self.win.pwd.setText(dbu[2])
+            self.win.server.setText(dbu[0])
+            self.win.salvar.setChecked(True)
+            self.c.execute(f'UPDATE user SET user="{dbu[1]}", pwd="{dbu[2]}", server="{dbu[0]}"')
+            self.conn.commit()
 
-        self.mainWin.btn_gerar.clicked.connect(
-            lambda: self.gerar(
-                self.mainWin.entry_cr.text(),
-                self.mainWin.igualORlike.currentText(),
-                self.mainWin.op_nivel.currentText(),
-                self.mainWin.op_nivel2.currentText(),
-                self.mainWin.op_empresas.currentText(),
-                self.mainWin.op_tipos.currentText()
-            )
-        )
+        # if dbu and not slv:
+        #     self.c.execute('DELETE FROM user')
+        #     self.conn.commit()
 
-        self.loginWin.btn_login.clicked.connect(
-            lambda: self.realizar_login(
-                self.loginWin.entry_server.text(),
-                self.loginWin.entry_uid.text(),
-                self.loginWin.entry_senha.text(),
-                )
-            )
+        elif not dbu and slv:
+            if user and pwd and server:
+                self.c.execute(f'INSERT INTO user(user, pwd, server) VALUES ("{user}","{pwd}","{server}");')
+                self.conn.commit()
+
+    def connect(self):
+        user = self.win.user.text()
+        pwd = self.win.pwd.text()
+        server = self.win.server.text()
+
+        self.win.fmPg.show()
+        self.add_value(0)
+        self.confirmar_dados()
+
+        self.add_value(10)
+        res = qr.new_connect_db(user, pwd, server)
+        if res == 'Conectado':
+            self.add_value(20)
+            self.crs()
+            self.win.fmPg.hide()
+            self.win.cr.currentTextChanged.connect(lambda x: self.mudar_template(x))
+            self.win.username.setText(user)
+            self.win.dateuser.setText(dt.now().strftime('Login: %d/%m/%Y %H:%M'))
+            self.win.pages.setCurrentWidget(self.win.main)
+        else: 
+            self.win.fmPg.hide()
+            self.msg(res)
+
+    def abrir_pasta(self):
+        system("CD QRCodes && explorer .")
+
+    def crs(self):
+        crs = qr.cons_crs()
+        self.add_value(30)
+
+        self.win.cr.clear()
+        for i in crs:
+            self.win.cr.addItem(i)
+        self.add_value(40)
+    
+    @cache
+    def mudar_template(self, cr):
+        if ' - POR - ' in cr: tmp = 'src/cores/modeloAzulEscuro.png'
+        elif ' - MAV - ' in cr: tmp = 'src/cores/modeloVerde.png'
+        elif ' - MAP -' in cr: tmp = 'src/cores/modeloVermelho.png'
+        elif ' - LPG -' in cr: tmp = 'src/cores/modeloAzul.png'
+        elif ' - SEG -' in cr: tmp = 'src/cores/modeloAzulEscuro.png'
+        else: tmp = 'src/cores/modeloCinza.png'
+        self.win.qr.setIcon(QIcon(tmp))
+
+    def gerar(self):
+        self.win.fmPg.show()
+        self.add_value(10)
+        cr = self.win.cr.currentText()
+        self.add_value(20)
+        op_nivel = self.win.op_nivel.currentText()
+        self.add_value(30)
+        nivel = self.win.nivel.currentText()
+        self.add_value(40)
+        empresa = self.win.empresa.currentText()
+        self.add_value(50)
+        tipo = self.win.tipo.currentText()
+        self.add_value(60)
+
+        res = qr.gerar(cr, '=', nivel, op_nivel, empresa, tipo)
+        self.add_value(100)
+        self.msg(res)
+        self.win.fmPg.hide()
         
-        App.exec()
-
-    def msg(self, win, message, tipo = 0, titulo = 'Gerador QR'):
-        match tipo:
-            case 0: QMessageBox.information(win, titulo, message)
-            case 1: QMessageBox.about(win, titulo, message)
-            case 2: QMessageBox.warning(win, titulo, message)
-
-    def realizar_login(self, server, uid, pwd):
-        self.msg(self.loginWin, 'Logando...')
-        login = self.back.connect_db(uid, pwd, server)
-        self.qr = QRCode(uid, pwd, server)
-        if login == 'Conectado':
-            self.mainWin.show()
-            self.loginWin.close()
-            self.msg(self.mainWin, f'{login}, Seja bem-vindo', 1)
-        else: self.msg(self.mainWin, 'Login Incorreto', 2)
-
-    def gerar(self, cr, op_cr, nivel, op_nivel, op_empresas, tipos):
-        if cr and op_cr and nivel and op_nivel and op_empresas:
-            if op_nivel == '0 - CR': nv = 3
-            else: nv = int(op_nivel) + 3
-            self.msg(self.mainWin, 'Gerando...')
-            self.qr.gerar(cr, op_cr, nivel, nv, op_empresas, tipos)
-            self.msg(self.mainWin, f'QRCodes Gerados! - {self.qr.nomeCR}', 1)
-        else: self.msg(self.mainWin, 'Dados Invalidos, Confira')
-
-if __name__ == '__main__':
-    GQR(QApplication([]))
+GQR()
