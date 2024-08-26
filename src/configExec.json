@@ -22,10 +22,6 @@
    "value": "C:/Users/Guilherme Breve/Documents/GitHub/Desktop_GQR/src/favicon.ico"
   },
   {
-   "optionDest": "name",
-   "value": "Gerador QR"
-  },
-  {
    "optionDest": "clean_build",
    "value": false
   },
@@ -64,6 +60,14 @@
   {
    "optionDest": "binaries",
    "value": "C:/Users/Guilherme Breve/Documents/GitHub/Desktop_GQR/qrcode.py;."
+  },
+  {
+   "optionDest": "binaries",
+   "value": "C:/Users/Guilherme Breve/Documents/GitHub/Desktop_GQR/models/notify.py;."
+  },
+  {
+   "optionDest": "binaries",
+   "value": "C:/Users/Guilherme Breve/Documents/GitHub/Desktop_GQR/models/version.py;."
   }
  ],
  "nonPyinstallerOptions": {

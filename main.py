@@ -5,10 +5,12 @@ from qdarktheme import setup_theme
 from sys import argv, exit
 from qrcode import QRCode
 from models.notify import Notify
+from models.version import Version
 from sqlite3 import connect
 from os import system
 from functools import cache
 from datetime import datetime as dt
+from webbrowser import open_new_tab
 
 qr = QRCode()
 app = QApplication(argv)
@@ -30,7 +32,8 @@ class GQR:
         self.win.nivel.setCurrentText('3 - CR')
         self.pg = self.win.pg
         self.win.fmPg.hide()
-
+        version = Version().get_version()
+        self.win.credits.setText(f'Desenvolvido por tecnobreve 2024 © - Versão: {version}')
         self.win.show()
         exit(app.exec_())
     
@@ -42,6 +45,11 @@ class GQR:
         self.win.btnLogin.clicked.connect(self.connect)
         self.win.btnGerar.clicked.connect(self.gerar)
         self.win.btnPasta.clicked.connect(self.abrir_pasta)
+
+        self.win.btnGit.clicked.connect(self.abrir_github)
+        self.win.btnYt.clicked.connect(self.abrir_youtube)
+        self.win.btnDocs.clicked.connect(self.abrir_docs)
+        self.win.btnTelegram.clicked.connect(self.abrir_telegram)
 
     def add_value(self, x):
         self.pg.setValue(x)
@@ -138,4 +146,17 @@ class GQR:
         self.add_value(100)
         self.msg(res)
         self.win.fmPg.hide()   
+
+    def abrir_youtube(self):
+        open_new_tab('https://www.youtube.com/watch?v=W6hMMplTn0Q&t=15s')
+
+    def abrir_telegram(self):
+        open_new_tab('https://t.me/gps_cns_bot')
+
+    def abrir_docs(self):
+        open_new_tab('https://desktop-gqr.readthedocs.io/en/latest/#como-gerar')
+
+    def abrir_github(self):
+        open_new_tab('https://github.com/foxtec198/Desktop_GQR')
+
 GQR()

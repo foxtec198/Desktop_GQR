@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Gerador QR"
-#define MyAppVersion "0.0.1"
+#define MyAppVersion "0.0.3"
 #define MyAppPublisher "Tecnobreve"
 #define MyAppURL "https://tecnobreve.my.canva.site/portifolio"
 #define MyAppExeName "Gerador QR.exe"
