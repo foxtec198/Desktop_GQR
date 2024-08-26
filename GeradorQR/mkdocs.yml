@@ -1,0 +1,26 @@
+site_name: Gerador QR
+repo_url: https://github.com/foxtec198/Desktop_GQR
+repo_name: Guilherme Breve/Desktop_GQR
+edit_uri: tree/main/
+
+markdown_extensions:
+  - attr_list
+
+extra_css:
+  - stylesheets/extra.css
+
+nav:
+ - Inicio: index.md
+ - Sobre: about.md
+
+theme:
+  palette:
+    scheme: slate
+    primary: amber
+  name: material
+  language: pt-BR
+  logo: assets/fav.png
+  favicon: assets/fav.png
+
+
+
