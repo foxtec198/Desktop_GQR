@@ -9,7 +9,7 @@ Para que seja realizado a instalação irei disponibilizar uma tabela abaixo, fi
 
 | Sistema | Link para Download |
 | ----------- | ----------- |
-| Windows | [Mega](https://mega.nz/file/6EVkhDrB#j24MtE1VMZn-DS9yPCJmWxb1lIDEuNQvx1FD8xhkj48) |
+| Windows | [Mega](https://mega.nz/file/TBdxlQhD#FuiAVSHtQIxGUppt9qdfIB6GcTBvAnxM9HKZaEfoD8M) |
 | Linux | Na lista de afazeres. |
 | Mac OS | Na lista de afazeres. |
 | Android | Em desenvolvimento. |
