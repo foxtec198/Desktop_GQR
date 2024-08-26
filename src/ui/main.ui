@@ -272,11 +272,119 @@ background: none;</string>
              <property name="cursor">
               <cursorShape>PointingHandCursor</cursorShape>
              </property>
+             <property name="layoutDirection">
+              <enum>Qt::LeftToRight</enum>
+             </property>
+             <property name="autoFillBackground">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>Logar</string>
              </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>../img/Access.png</normaloff>../img/Access.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>25</width>
+               <height>25</height>
+              </size>
+             </property>
              <property name="shortcut">
               <string>Return</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnLogin_3">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Malgun Gothic Semilight</family>
+               <pointsize>10</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="cursor">
+              <cursorShape>PointingHandCursor</cursorShape>
+             </property>
+             <property name="layoutDirection">
+              <enum>Qt::LeftToRight</enum>
+             </property>
+             <property name="autoFillBackground">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Documentação</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>../img/Google Docs.png</normaloff>../img/Google Docs.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>25</width>
+               <height>25</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnLogin_2">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Malgun Gothic Semilight</family>
+               <pointsize>10</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="cursor">
+              <cursorShape>PointingHandCursor</cursorShape>
+             </property>
+             <property name="layoutDirection">
+              <enum>Qt::LeftToRight</enum>
+             </property>
+             <property name="autoFillBackground">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Como usar ?</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>../img/YouTube.png</normaloff>../img/YouTube.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>25</width>
+               <height>25</height>
+              </size>
              </property>
             </widget>
            </item>
@@ -292,6 +400,59 @@ background: none;</string>
               </size>
              </property>
             </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_11">
+             <property name="text">
+              <string>Sem acesso ao BD ou VPN? Tente usar nosso bot no Telegram!</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnLogin_4">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Malgun Gothic Semilight</family>
+               <pointsize>10</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="cursor">
+              <cursorShape>PointingHandCursor</cursorShape>
+             </property>
+             <property name="layoutDirection">
+              <enum>Qt::LeftToRight</enum>
+             </property>
+             <property name="autoFillBackground">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Telegram</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>../img/Telegram.png</normaloff>../img/Telegram.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>25</width>
+               <height>25</height>
+              </size>
+             </property>
+            </widget>
            </item>
           </layout>
          </widget>
@@ -333,7 +494,7 @@ background: none;</string>
               <string/>
              </property>
              <property name="pixmap">
-              <pixmap>../../../../../Pictures/Grupo GPS/ggps_vista-removebg-preview.png</pixmap>
+              <pixmap>../img/banner.png</pixmap>
              </property>
              <property name="scaledContents">
               <bool>false</bool>
@@ -759,6 +920,9 @@ background: none;</string>
             <property name="icon">
              <iconset>
               <normaloff>../img/Folder.png</normaloff>../img/Folder.png</iconset>
+            </property>
+            <property name="shortcut">
+             <string>Ctrl+O</string>
             </property>
            </widget>
           </item>

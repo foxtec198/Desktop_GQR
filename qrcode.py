@@ -9,6 +9,7 @@ from PyPDF2 import PdfMerger, PdfReader
 from os import mkdir
 from sqlalchemy import create_engine
 from urllib.parse import quote_plus 
+import pyodbc
 
 class QRCode:
     def new_connect_db(self, uid, pwd, server, database='Vista_Replication_PRD', driver='ODBC Driver 18 for SQL Server'):
@@ -18,15 +19,13 @@ class QRCode:
         self.database = quote_plus(database)
         driver = quote_plus(driver)
         url = f'mssql://{self.uid}:{self.pwd}@{self.server}/{self.database}?driver={driver}&&TrustServerCertificate=yes'
+        engine = create_engine(url)
         try:
-            engine = create_engine(url)
-            try:
-                self.conn = engine.connect()
-                return 'Conectado'
-            except Exception as e:
-                return f'Confira os dados acima! - {e}'
-        except Exception as error:
-            return error
+            self.conn = engine.connect()
+            return 'Conectado'
+        except Exception as e:
+            return f'Confira os dados acima! - {e}'
+
     @cache
     def get_empresas(self, empresas):
         match empresas:
@@ -105,6 +104,7 @@ class QRCode:
         nomeCR = cr
         estrutura = self.cons(cr, op_cr, nivel, op_nivel, tipos)
         es = estrutura.to_dict()
+        print(es)
         for i in es['Descricao']:
             if es['Descricao']:
                 local = es['Descricao'][i]
@@ -203,6 +203,4 @@ if __name__ == '__main__':
     qr = QRCode()
     conn = qr.new_connect_db('guilherme.breve','84584608@Gui198','10.56.6.56')
     print(conn)
-    print(qr.cons_crs())
-    
-    # print(qr.gerar(cr=51953, op_cr='=', op_nivel=4, nivel='>=', empresa='Grupo GPS', tipos='Locais'))
+    print(qr.gerar('60434 - PR - LPG - COND SPAZIO LEOPOLDINA','=', 4, '>=', 'Grupo GPS', 'Locais'))

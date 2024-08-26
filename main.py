@@ -4,6 +4,7 @@ from PyQt5.uic import loadUi
 from qdarktheme import setup_theme
 from sys import argv, exit
 from qrcode import QRCode
+from models.notify import Notify
 from sqlite3 import connect
 from os import system
 from functools import cache
@@ -83,6 +84,7 @@ class GQR:
 
         self.add_value(10)
         res = qr.new_connect_db(user, pwd, server)
+        print(res)
         if res == 'Conectado':
             self.add_value(20)
             self.crs()
@@ -130,10 +132,10 @@ class GQR:
         self.add_value(50)
         tipo = self.win.tipo.currentText()
         self.add_value(60)
-
+        print(cr, '=', nivel, op_nivel, empresa, tipo)
         res = qr.gerar(cr, '=', nivel, op_nivel, empresa, tipo)
+        Notify()
         self.add_value(100)
         self.msg(res)
-        self.win.fmPg.hide()
-        
+        self.win.fmPg.hide()   
 GQR()
